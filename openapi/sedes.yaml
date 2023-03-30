@@ -1,0 +1,920 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /vigilantes/{idVigilante}:
+    get:
+      tags:
+      - controlador-vigilantes
+      description: Devuelve información de un vigilante concreto
+      operationId: consultarVigilante
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocatoria se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idVigilante
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "404":
+          description: Vigilante no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+    put:
+      tags:
+      - controlador-vigilantes
+      description: 'Actualiza un vigilante concreto. '
+      operationId: actualizarSede
+      parameters:
+      - name: idVigilante
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Personal'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "404":
+          description: Vigilante no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+    delete:
+      tags:
+      - controlador-vigilantes
+      description: Elimina un vigilante concreto. Solo se puede eliminar si no se
+        ha asociado ningún aula en ninguna convocatoria
+      operationId: eliminarVigilante
+      parameters:
+      - name: idVigilante
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: La eliminación no es posible
+        "403":
+          description: Acceso no autorizado
+  /sedes/{idSede}:
+    get:
+      tags:
+      - controlador-sedes
+      description: Devuelve información de una sede concreta
+      operationId: consultarSedeConcreta
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocaotira se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idSede
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+        "404":
+          description: Sede no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+    put:
+      tags:
+      - controlador-sedes
+      description: Actualiza una sede concreta
+      operationId: actualizarSede_1
+      parameters:
+      - name: idSede
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sede'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+        "404":
+          description: "Sede, vigilante, responsable o aula no encontrada"
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+    delete:
+      tags:
+      - controlador-sedes
+      description: "Elimina una sede concreta. Solo se puede eliminar si no se ha\
+        \ asociado ningún responsable, vigilante o aula en ninguna convocatoria"
+      operationId: eliminarSede
+      parameters:
+      - name: idSede
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: Sede no encontrada
+        "403":
+          description: Acceso no autorizado
+  /responsables/{idResponsable}:
+    get:
+      tags:
+      - controlador-responsables
+      description: Devuelve información de un responsable concreto
+      operationId: consultarResponsable
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocatoria se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idResponsable
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "404":
+          description: Responsable no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+    put:
+      tags:
+      - controlador-responsables
+      description: 'Actualiza un responsable concreto. '
+      operationId: actualizarSede_2
+      parameters:
+      - name: idResponsable
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Personal'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "404":
+          description: Responsable no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+  /aulas/{idAula}:
+    get:
+      tags:
+      - controlador-aulas
+      description: Devuelve información de un aula concreta
+      operationId: consultarAula
+      parameters:
+      - name: idAula
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+        "404":
+          description: Aula no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+    put:
+      tags:
+      - controlador-aulas
+      description: Actualiza un aula concreta. No se puede actualizar la sede
+      operationId: actualizarSede_3
+      parameters:
+      - name: idAula
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AulaNueva'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+        "404":
+          description: Aula no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+    delete:
+      tags:
+      - controlador-aulas
+      description: Elimina un aula concreta. Solo se puede eliminar si no se ha asociado
+        ningún vigilante/responsable en ninguna convocatoria
+      operationId: eliminarAula
+      parameters:
+      - name: idAula
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: Aula no encontrada
+        "403":
+          description: Acceso no autorizado
+  /asignacion/{idSede}:
+    get:
+      tags:
+      - controlador-asignacion
+      description: Devuelve la asignación de vigilantes  a aulas. Se puede hacer una
+        consulta devolviendo solo los asignados o los no asignados. Solo se proporcionan
+        datos de la convocatoria actual.
+      operationId: consultarAsginacion
+      parameters:
+      - name: idSede
+        in: path
+        description: ID de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: asignados
+        in: query
+        description: Filtrar por vigilantes asignados o no
+        required: false
+        schema:
+          type: boolean
+      - name: idConvocatoria
+        in: query
+        description: ID de la convocatoria
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Asignación devuelta con éxito
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionPersonalAulas'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionPersonalAulas'
+    put:
+      tags:
+      - controlador-asignacion
+      description: Actualiza la asignacion de la sede.
+      operationId: actualizarAsginacion
+      parameters:
+      - name: idSede
+        in: path
+        description: ID de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              uniqueItems: true
+              type: array
+              description: Conjunto de asignación de personal a aulas y slots con
+                indicación de si es repsonsable del aula. El servicio debe comprobar
+                que no se asigna a la misma persona a dos aulas al mismo tiempo y
+                que se le hace una asignación en un momento en que está disponible.
+              items:
+                $ref: '#/components/schemas/AsignacionPersonalAulas'
+        required: true
+      responses:
+        "200":
+          description: Asignación actualizada con éxito
+        "404":
+          description: 'Algún identificador no encontrado. '
+        "409":
+          description: Alguna restricción no se cumple
+        "403":
+          description: Acceso no autorizado
+  /vigilantes:
+    get:
+      tags:
+      - controlador-vigilantes
+      description: Devuelve la lista de vigilantes
+      operationId: consultarVigilantes
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocatoria se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idSede
+        in: query
+        description: Si no se da la sede se devuelve de todas
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Personal'
+    post:
+      tags:
+      - controlador-vigilantes
+      description: Crea un nuevo vigilante en una sede. Si el vigilante ya existía
+        en otras convocatorias pero no es esta se añade a esta convocaotira y se registra
+        su disponibilidad para esta.
+      operationId: crearVigilante
+      parameters:
+      - name: idSede
+        in: query
+        description: Identificador de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Personal'
+        required: true
+      responses:
+        "201":
+          description: El vigilante se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "404":
+          description: La sede indicada no se encuentra
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "409":
+          description: El vigilante ya está registrado en esta convocatoria
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+  /sedes:
+    get:
+      tags:
+      - controlador-sedes
+      description: Devuelve la lista de sedes
+      operationId: consultarSedes
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocatoria se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sede'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Sede'
+    post:
+      tags:
+      - controlador-sedes
+      description: Crea una nueva sede.
+      operationId: crearSede
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Sede'
+        required: true
+      responses:
+        "201":
+          description: La sede se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+        "404":
+          description: Algunos de los datos de aulas o personal no se encuentran
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Sede'
+  /responsables:
+    get:
+      tags:
+      - controlador-responsables
+      description: Devuelve la lista de responsables
+      operationId: consultarResponsables
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocatoria se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idSede
+        in: query
+        description: Si no se da la sede se devuelve de todas
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Personal'
+    post:
+      tags:
+      - controlador-responsables
+      description: Crea un nuevo responsable en una sede. Si el responsable ya existía
+        en otras convocatorias pero no es esta se añade a esta convocatoria.
+      operationId: crearResponsable
+      parameters:
+      - name: idSede
+        in: query
+        description: Identificador de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Personal'
+        required: true
+      responses:
+        "201":
+          description: El responsable se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "404":
+          description: La sede indicada no se encuentra
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "409":
+          description: El responsable ya está registrado en esta convocatoria
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Personal'
+  /notificaciones:
+    post:
+      tags:
+      - controlador-asignacion
+      description: Programa el envío de notificaciones de asignación de aulas a los
+        vigilanes. Contacta con el servicio de notificaciones.
+      operationId: programaNotificacionVigilantes
+      parameters:
+      - name: notificacion
+        in: query
+        description: Detalles de envío de notificaciones
+        required: true
+        schema:
+          $ref: '#/components/schemas/NotificacionAsignacionAulaVigilantes'
+      responses:
+        "200":
+          description: Notificaciones programadas
+        "403":
+          description: Acceso no autorizado
+  /aulas:
+    get:
+      tags:
+      - controlador-aulas
+      description: Devuelve la lista de aulas
+      operationId: consultarAulas
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se da la convocatoria se asume que es la actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idSede
+        in: query
+        description: Si no se da la sede se devuelve de todas
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Aula'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Aula'
+    post:
+      tags:
+      - controlador-aulas
+      description: Crea una nueva aula en una sede.
+      operationId: crearAula
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AulaNueva'
+        required: true
+      responses:
+        "201":
+          description: El aula se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+        "404":
+          description: La sede indicada no se encuentran
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Aula'
+  /responsables/{idresponsable}:
+    delete:
+      tags:
+      - controlador-responsables
+      description: Elimina un responsable concreto. Solo se puede eliminar si no se
+        ha asociado ningún aula en ninguna convocatoria
+      operationId: eliminarResponsable
+      parameters: []
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: La eliminación no es posible
+        "403":
+          description: Acceso no autorizado
+components:
+  schemas:
+    NombreCompleto:
+      type: object
+      properties:
+        apellido1:
+          type: string
+        apellido2:
+          type: string
+        nombre:
+          type: string
+    Personal:
+      type: object
+      properties:
+        dni:
+          type: string
+        nombreCompleto:
+          $ref: '#/components/schemas/NombreCompleto'
+        telefono:
+          type: string
+        email:
+          type: string
+        slotsConDisponibilidad:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int64
+    Aula:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        idSede:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        aforo:
+          type: integer
+          format: int32
+    Sede:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        aulas:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Aula'
+        repsonsable:
+          $ref: '#/components/schemas/Personal'
+        vigilantes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: '#/components/schemas/Personal'
+    AulaNueva:
+      type: object
+      properties:
+        idSede:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        aforo:
+          type: integer
+          format: int32
+    AsignacionPersonalAulas:
+      type: object
+      properties:
+        idSlot:
+          type: integer
+          format: int64
+        idAula:
+          type: integer
+          format: int64
+        idPersonal:
+          type: integer
+          format: int64
+        responsable:
+          type: boolean
+    NotificacionAsignacionAulaVigilantes:
+      type: object
+      properties:
+        plantillaAsunto:
+          type: string
+        plantillaCuerpo:
+          type: string
+        programacionEnvio:
+          type: string
+          format: date-time
+        medios:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - SMS
+            - EMAIL
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

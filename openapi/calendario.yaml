@@ -1,0 +1,631 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /slots/{idSlot}:
+    get:
+      tags:
+      - controlador-slots
+      description: Devuelve información de un slot concreto
+      operationId: consultarMateria
+      parameters:
+      - name: idSlot
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "404":
+          description: Slot no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+    put:
+      tags:
+      - controlador-slots
+      description: Actualiza un slot concreto
+      operationId: actualizarMateria
+      parameters:
+      - name: idSlot
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slot'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "404":
+          description: Slot no encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+    delete:
+      tags:
+      - controlador-slots
+      description: Elimina un slot concreto. Solo se puede hacer una eliminación lógica
+        (marcando el slot como eliminado) y solo de la convocaotira actual.
+      operationId: eliminarPrueba
+      parameters:
+      - name: idSlot
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: Prueba no encontrada
+        "403":
+          description: Acceso no autorizado
+  /pruebas/{idPrueba}:
+    get:
+      tags:
+      - controlador-pruebas
+      description: Devuelve información de una prueba concreta
+      operationId: consultarPrueba
+      parameters:
+      - name: idPrueba
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "404":
+          description: Prueba no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+    put:
+      tags:
+      - controlador-pruebas
+      description: Actualiza una prueba concreta
+      operationId: actualizarPrueba
+      parameters:
+      - name: idPrueba
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prueba'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+        "404":
+          description: Prueba no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+    delete:
+      tags:
+      - controlador-pruebas
+      description: Elimina una prueba concreta. Solo se puede hacer una eliminación
+        lógica (marcando la prueba como eliminada).
+      operationId: eliminarPrueba_1
+      parameters:
+      - name: idPrueba
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: Prueba no encontrada
+        "403":
+          description: Acceso no autorizado
+  /materias/{idMateria}:
+    get:
+      tags:
+      - controlador-materias
+      description: Devuelve información de una materia concreta
+      operationId: consultarMateria_1
+      parameters:
+      - name: idMateria
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "404":
+          description: Materia no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+    put:
+      tags:
+      - controlador-materias
+      description: Actualiza una materia concreta
+      operationId: actualizarMateria_1
+      parameters:
+      - name: idMateria
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Materia'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "404":
+          description: Materia no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+    delete:
+      tags:
+      - controlador-materias
+      description: Elimina una materia concreta. Solo se puede hacer una eliminación
+        lógica (marcando la materia como eliminada).
+      operationId: eliminarMateria
+      parameters:
+      - name: idMateria
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminación correcta
+        "404":
+          description: Materia no encontrada
+        "403":
+          description: Acceso no autorizado
+  /slots:
+    get:
+      tags:
+      - controlador-slots
+      description: Devuelve la lista de slots planificados en una convocatoria.
+      operationId: consultarSlots
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se indica se asume que se pregunta por la convocatoria
+          actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slot'
+        "404":
+          description: Convocatoria no encontrada
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slot'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slot'
+    post:
+      tags:
+      - controlador-slots
+      description: Crea un nuevo slot en la convocatoria actual. Devuelve el slot
+        creado.
+      operationId: crearSlot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Slot'
+        required: true
+      responses:
+        "201":
+          description: El slot se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+  /pruebas:
+    get:
+      tags:
+      - controlador-pruebas
+      description: Devuelve la lista de pruebas planificadas en un slot y convocatoria.
+      operationId: consultarPruebas
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se indica se asume que se pregunta por la convocatoria
+          actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idSlot
+        in: query
+        description: El slot por el que se consulta (si no se indica se devuelven
+          todos)
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prueba'
+        "404":
+          description: Slot o convocatoria no encontrados
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prueba'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prueba'
+    post:
+      tags:
+      - controlador-pruebas
+      description: Crea una nueva prueba. Devuelve la prueba creada.
+      operationId: crearPrueba
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Prueba'
+        required: true
+      responses:
+        "201":
+          description: La prueba se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+        "404":
+          description: La materia o el slot no se encuentran
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+  /materias:
+    get:
+      tags:
+      - controlador-materias
+      description: Devuelve la lista de materias
+      operationId: consultarMaterias
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Materia'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Materia'
+    post:
+      tags:
+      - controlador-materias
+      description: Crea una nueva materia. Devuelve la materia creada.
+      operationId: crearMateria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Materia'
+        required: true
+      responses:
+        "201":
+          description: La materia se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+  /convocatorias:
+    get:
+      tags:
+      - controlador-convocatorias
+      description: Devuelve la lista de convocatorias
+      operationId: consultarConvocatorias
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Convocatoria'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Convocatoria'
+    post:
+      tags:
+      - controlador-convocatorias
+      description: Crea una nueva convocatoria y se convierte en actual.
+      operationId: crearConvocatoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Materia'
+        required: true
+      responses:
+        "201":
+          description: La convocatoria se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Materia'
+  /convocatorias/actual:
+    get:
+      tags:
+      - controlador-convocatorias
+      description: Devuelve información de la convocatoria actual
+      operationId: consultarConvocatoriaActual
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Convocatoria'
+        "404":
+          description: Convocatoria no encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Convocatoria'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Convocatoria'
+components:
+  schemas:
+    Convocatoria:
+      type: object
+      properties:
+        idConvocatoria:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        fechaInicio:
+          type: string
+          format: date-time
+        fechaFin:
+          type: string
+          format: date-time
+    Slot:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        inicio:
+          type: string
+          format: date-time
+        fin:
+          type: string
+          format: date-time
+        eliminado:
+          type: boolean
+        convocatoria:
+          $ref: '#/components/schemas/Convocatoria'
+    Materia:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        nombre:
+          type: string
+        eliminada:
+          type: boolean
+    Prueba:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        slot:
+          $ref: '#/components/schemas/Slot'
+        materia:
+          $ref: '#/components/schemas/Materia'
+        eliminada:
+          type: boolean
+      description: Es suficiente indicar el ID del slot y la materia.
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

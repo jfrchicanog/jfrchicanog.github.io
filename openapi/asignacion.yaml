@@ -1,0 +1,334 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /asignacion/{idSede}:
+    get:
+      tags:
+      - controlador-asignacion
+      description: Devuelve la asignación de estudiantes  a aulas. Se puede hacer
+        una consulta devolviendo solo los asignados o los no asignados. Solo se proporcionan
+        datos de la convocatoria actual.
+      operationId: consultarAsginacion
+      parameters:
+      - name: idSede
+        in: path
+        description: ID de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: asignados
+        in: query
+        description: Filtrar por estudiantes asignados o no
+        required: false
+        schema:
+          type: boolean
+      - name: idConvocatoria
+        in: query
+        description: ID de la convocatoria
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Asignación devuelta con éxito
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionEstudiantes'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionEstudiantes'
+    put:
+      tags:
+      - controlador-asignacion
+      description: Actualiza la asignacion de la sede.
+      operationId: actualizarAsginacion
+      parameters:
+      - name: idSede
+        in: path
+        description: ID de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asignacion'
+        required: true
+      responses:
+        "200":
+          description: Asignación actualizada con éxito
+        "404":
+          description: 'Algún aula o estudiante no encontrado. '
+        "403":
+          description: Acceso no autorizado
+    delete:
+      tags:
+      - controlador-asignacion
+      description: Limpia la asignacion de la sede.
+      operationId: limpiarAsginacion
+      parameters:
+      - name: idSede
+        in: path
+        description: ID de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Asignación limpiada con éxito
+        "403":
+          description: Acceso no autorizado
+  /anexo2:
+    get:
+      tags:
+      - controlador-asignacion
+      description: Devuelve la información del anexo 2 para una sede y día
+      operationId: consultarAnexo2
+      parameters:
+      - name: idAula
+        in: query
+        description: ID del aula
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: idSlot
+        in: query
+        description: ID del slot
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: idConvocatoria
+        in: query
+        description: ID de la convocatoria
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devuelve la información del anexo 2
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionAulasAnexo2'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionAulasAnexo2'
+    put:
+      tags:
+      - controlador-asignacion
+      description: Actualiza la asistencia y la entrega del examen en el anexo 2
+      operationId: actualizarAnexo2
+      parameters:
+      - name: idAula
+        in: query
+        description: ID del aula
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: idSlot
+        in: query
+        description: ID del slot
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              uniqueItems: true
+              type: array
+              description: "En la asignación se identifica al alumno con el DNI, no\
+                \ es necesario aportar el nombre completo.\tSe modificar solo la asistencia\
+                \ y la entrega."
+              items:
+                $ref: '#/components/schemas/AsignacionAulasAnexo2'
+        required: true
+      responses:
+        "200":
+          description: Actualización correcta
+        "403":
+          description: Acceso no autorizado
+  /notificaciones:
+    post:
+      tags:
+      - controlador-asignacion
+      description: Programa el envío de notificaciones de asignación de aulas a los
+        estudiantes. Contacta con el servicio de notificaciones y tendrá que consultar
+        la información de los estudiantes del servicio de estudiantes.
+      operationId: programaNotificacionNotas
+      parameters:
+      - name: notificacion
+        in: query
+        description: Detalles de envío de notificaciones
+        required: true
+        schema:
+          $ref: '#/components/schemas/NotificacionAsignacionAulaEstudiantes'
+      responses:
+        "200":
+          description: Notificaciones programadas
+        "403":
+          description: Acceso no autorizado
+  /anexo1:
+    get:
+      tags:
+      - controlador-asignacion
+      description: Devuelve la información del anexo 1 para una sede y día
+      operationId: consultarAnexo1
+      parameters:
+      - name: idSede
+        in: query
+        description: ID de la sede
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: fecha
+        in: query
+        description: Día de examen
+        required: true
+        schema:
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Devuelve la información del anexo 1
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionAulasAnexo1'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/AsignacionAulasAnexo1'
+components:
+  schemas:
+    Asignacion:
+      type: object
+      properties:
+        idPrueba:
+          type: integer
+          format: int64
+        dniEstudiantes:
+          type: array
+          items:
+            type: string
+        idAulas:
+          type: array
+          items:
+            type: integer
+            format: int64
+      description: "Conjunto de estudiantes y aulas para asignar para un slot y materia.\
+        \ Se asignarán los estudiantes en el orden  indicado a los asientos disponibles\
+        \ de las aulas, tomando estas en el orden indicado"
+    AsignacionAulasAnexo2:
+      type: object
+      properties:
+        idMateria:
+          type: integer
+          format: int64
+        dni:
+          type: string
+        nombreEstudiante:
+          $ref: '#/components/schemas/NombreCompleto'
+        asistencia:
+          type: boolean
+        entregaExamen:
+          type: boolean
+    NombreCompleto:
+      type: object
+      properties:
+        apellido1:
+          type: string
+        apellido2:
+          type: string
+        nombre:
+          type: string
+    NotificacionAsignacionAulaEstudiantes:
+      type: object
+      properties:
+        plantillaAsunto:
+          type: string
+        plantillaCuerpo:
+          type: string
+        programacionEnvio:
+          type: string
+          format: date-time
+        medios:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - SMS
+            - EMAIL
+    AsignacionEstudiantes:
+      type: object
+      properties:
+        idPrueba:
+          type: integer
+          format: int64
+        dni:
+          type: string
+        idAula:
+          type: integer
+          format: int64
+    AsignacionAulasAnexo1:
+      type: object
+      properties:
+        idPrueba:
+          type: integer
+          format: int64
+        idAula:
+          type: integer
+          format: int64
+        inicio:
+          $ref: '#/components/schemas/NombreCompleto'
+        fin:
+          $ref: '#/components/schemas/NombreCompleto'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

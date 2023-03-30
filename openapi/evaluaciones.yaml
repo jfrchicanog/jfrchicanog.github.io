@@ -1,0 +1,268 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: http://localhost:8080
+  description: Generated server url
+paths:
+  /examenes/{id}:
+    get:
+      tags:
+      - controlador-evaluaciones
+      description: Obtiene información de un examen concreto
+      operationId: getExamen
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devuelve la información
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Examen'
+        "404":
+          description: El examen no existe
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Examen'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Examen'
+    put:
+      tags:
+      - controlador-evaluaciones
+      description: Actualiza la nota de un examen concreto (el resto de datos no se
+        deberían cambiar). Devuelve el examen actualizado.
+      operationId: actualizarExamen
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Examen'
+        required: true
+      responses:
+        "200":
+          description: La nota se ha actualizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Examen'
+        "404":
+          description: El examen no existe
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Examen'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Examen'
+  /examenes/asignacion:
+    get:
+      tags:
+      - controlador-evaluaciones
+      description: Consulta la asignación de exámenes a correctores
+      operationId: obtenerAsignacion
+      responses:
+        "200":
+          description: Devuelve la asignación de correctores a exámenes
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asignacion'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asignacion'
+    put:
+      tags:
+      - controlador-evaluaciones
+      description: Realiza o actualiza la asignación de exámenes a correctores
+      operationId: realizarAsignacion
+      requestBody:
+        content:
+          application/json:
+            schema:
+              uniqueItems: true
+              type: array
+              items:
+                $ref: '#/components/schemas/Asignacion'
+        required: true
+      responses:
+        "200":
+          description: La actualización de asiganción se ha realizado correctamente.
+        "403":
+          description: Acceso no autorizado
+  /notificaciones/notas:
+    post:
+      tags:
+      - controlador-evaluaciones
+      description: Programa el envío de notificaciones de notas a los estudiantes.
+        Contacta con el servicio de notificaciones y tendrá que consultar la información
+        de los estudiantes del servicio de estudiantes.
+      operationId: programaNotificacionNotas
+      parameters:
+      - name: notificacion
+        in: query
+        description: Detalles de envío de notificaciones
+        required: true
+        schema:
+          $ref: '#/components/schemas/NotificacionNotas'
+      responses:
+        "200":
+          description: Notificaciones programadas
+        "403":
+          description: Acceso no autorizado
+  /notas:
+    get:
+      tags:
+      - controlador-evaluaciones
+      description: Consulta las notas de un/a estudiante  y lo devuelve si el DNI
+        y el apellido coinciden
+      operationId: consultarNotas
+      parameters:
+      - name: dni
+        in: query
+        description: DNI del/la estudiante
+        required: true
+        schema:
+          type: string
+      - name: apellido
+        in: query
+        description: Primer apellido del/la estudiante
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Devuelve las notas del/la estudiante
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Examen'
+        "404":
+          description: No existe el/la estudiante o no coinciden los datos
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Examen'
+      security:
+      - public: []
+  /examenes/correcciones:
+    get:
+      tags:
+      - controlador-evaluaciones
+      description: "Obtiene la lista de exámenes corregidos y por corregir. Las listas\
+        \ contienen solo los identificadores de los exámenes, para reducir el payload.\
+        \ Los exámenes se refieren a la convocatoria actual (que puede consultarse\
+        \ en otro microservicio)."
+      operationId: obtenerCorrecciones
+      responses:
+        "200":
+          description: Devuelve la lista de identificadores de exámenes corregidos
+            y por corregir
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EstadoCorrecciones'
+        "403":
+          description: Acceso no autorizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/EstadoCorrecciones'
+components:
+  schemas:
+    Examen:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        materia:
+          type: integer
+          format: int64
+        codigoAlumno:
+          type: integer
+          format: int64
+        nota:
+          type: number
+          format: float
+    Asignacion:
+      type: object
+      properties:
+        idCorrector:
+          type: integer
+          format: int64
+        idExamen:
+          type: integer
+          format: int64
+    NotificacionNotas:
+      type: object
+      properties:
+        plantillaAsunto:
+          type: string
+        plantillaCuerpo:
+          type: string
+        programacionEnvio:
+          type: string
+          format: date-time
+        medios:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - SMS
+            - EMAIL
+    EstadoCorrecciones:
+      type: object
+      properties:
+        corregidos:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+        pendientes:
+          uniqueItems: true
+          type: array
+          items:
+            type: integer
+            format: int32
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
