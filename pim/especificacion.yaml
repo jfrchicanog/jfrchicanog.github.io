@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Microservicios de Gestión
-  description: 'API para la gestión de usuarios, cuentas, planes, productos y activos.'
+  title: Microservicios del Proyecto de Gestión de Productos (miniPIM)
+  description: 'API para la gestión de usuarios, cuentas y planes, productos y activos.'
   version: 1.0.0
 servers:
   - url: 'https://api.example.com'
@@ -187,26 +187,373 @@ paths:
           description: Credenciales no válidas o faltantes
         '403':
           description: Sin permisos suficientes
-      
-  /plans:
+
+  /cuenta:
     get:
       tags:
         - Cuentas
-      summary: Listar planes
-      operationId: listPlans
+      summary: >
+        Consulta cuentas. 
+        Puede obtenerlas todas (solo si es administrador quien hace la consulta),
+        la que tiene el idCuenta indicado en el parámetro de consulta
+        (solo si es administrador o es un usuario asociado a la cuenta),
+        las que pertenecen al usuario con identificador idUsuario,
+        las que tienen el nombre indicando en el parámetro de consulta (solo para administradores),
+        y las que tienen asociadas un plan concreto (solo administradores).
+        Si no se indica ningún parámetro de consulta y no es un administrador, se devuelve solo las
+        cuentas a las que tiene acceso como usuario (equivalente a hacer idUsuario=miusuario).
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: query
+          description: Identificador de la cuenta.
+        - schema:
+            type: integer
+          name: idUsuario
+          in: query
+          description: Identificador del usuario.
+        - schema:
+            type: integer
+          name: nombre
+          in: query
+          description: Nombre de la cuenta.
+        - schema:
+            type: integer
+          name: idPlan
+          in: query
+          description: Identificador del plan.
+
       responses:
         '200':
-          description: Lista de planes obtenida correctamente
+          description: Devuelve la lista de cuentas solicitada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cuenta'
+        '401':
+          description: Credenciales no válidas o faltantes
+        '403':
+          description: Sin permisos suficientes
+    post:
+      tags:
+        - Cuentas
+      summary: >
+        Añade una cuenta nueva (solo para administradores). 
+        El plan no tiene que estar completo, basta con que aparezca
+        el ID del plan en el objeto.
+        Al crearse la cuenta se asocia el usuario que la crea como propietario y usuario.
+        Esta operación solo la puede hacer un administrador.
+      parameters:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cuenta'  
+      responses:
+        '201':
+          description: Se crea la cuenta correspondiente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cuenta'
+        '401':
+          description: Credenciales no válidas o faltantes
+        '403':
+          description: Sin permisos suficientes
+
+  /cuenta/{idCuenta}:
+    put:
+      tags:
+        - Cuentas
+      summary: >
+        Modifica una cuenta (solo para administradores). 
+        El plan no tiene que estar completo, basta con que aparezca
+        el ID del plan en el objeto. Esto permite actualizar el plan asociado a una cuenta.
+        Esta operació solo la puede hacer un administrador.
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: path
+          description: Identificador de la cuenta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cuenta'      
+      responses:
+        '200':
+          description: Actualiza la cuenta correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cuenta'
+        '401':
+          description: Credenciales no válidas o faltantes
+        '403':
+          description: Sin permisos suficientes
+    delete:
+      tags:
+        - Cuentas
+      summary: >
+        Elimina una cuenta. 
+        Para poder eliminarla no puede tener tener productos, relaciones, actios o categorías.
+        Conocer esto implica llamar a los endpoints de los otros microservicios.
+        Esta operación solo la puede hacer un administrador.
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: path
+          description: Identificador de la cuenta
+      responses:
+        '200':
+          description: Se elimina la cuenta correctamente.
+        '401':
+          description: Credenciales no válidas o faltantes
+        '403':
+          description: >
+            Sin permisos suficientes o con algún recurso asociado 
+            (producto, activo, categoría de producto o activo, o relación).
+
+  /cuenta/{idCuenta}/propietario:
+    get:
+      tag:
+        - Cuentas
+      summary: >
+        Devuelve información del propietario de una cuenta. 
+        Este microservicio solo guarda el ID, debe consultar
+        el microservicio de gestión de usuarios para obtener el resto de información.
+        Solo lo pueden consultar personas con acceso a la cuenta (administrador y usuarios 
+        asociados a la cuenta).
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: path
+          description: Identificador de la cuenta
+      responses:
+        '200':
+          description: Devuelve el ID, email y nombre completo del propietario de la cuenta.
+          content:
+            applicaion/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                    format: email
+                  nombre:
+                    type: string
+                  apellido1:
+                    type: string
+                  apellido2:
+                    type: string
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+                  
+    post:
+      tag:
+        - Cuentas
+      summary: >
+        Actualiza el propietario de una cuenta. 
+        Solo hay que indicar el ID o el e-mail del nuevo propietario.
+        Se debe comprobar que el usuario existe.
+        Si el propietario no es un usuario, se añade también como usuario.
+        Esta operación solo puede realizarla un administrador.
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: path
+          description: Identificador de la cuenta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id: 
+                  type: integer
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: El propietario de la cuenta queda acualizado. Devuelve el nuevo propietario.
+          content:
+            applicaion/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                    format: email
+                  nombre:
+                    type: string
+                  apellido1:
+                    type: string
+                  apellido2:
+                    type: string
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: >
+            Sin permisos suficientes. 
+            También puede dar este código si el usuario que va a ser propietario no existe.
+
+  /cuenta/{idCuenta}/usuarios:
+    get:
+      tag:
+        - Cuentas
+      summary: >
+        Devuelve la lista de usuarios de una cuenta. 
+        Este microservicio solo guarda los IDs de los usuarios, se debe consultar
+        el microservicio de gestión de usuarios para obtener el resto de información.
+        Solo lo pueden consultar el administrador y el propietario de la cuenta.
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: path
+          description: Identificador de la cuenta
+      responses:
+        '200':
+          description: Devuelve un array con el ID, email y nombre completo de los usuarios de la cuenta.
+          content:
+            applicaion/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                        format: email
+                      nombre:
+                        type: string
+                      apellido1:
+                        type: string
+                      apellido2:
+                        type: string
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+                  
+    post:
+      tag:
+        - Cuentas
+      summary: >
+        Actualiza el listado de usuarios de una cuenta. 
+        Solo hay que indicar el ID o el e-mail de cada uno de los usuarios (cualquier de ellos).
+        El propietario siempre tiene que ser un usuario, no puede eliminarse usando este método.
+        Esta operación la puede realizar un administrador y el propietario de la cuenta.
+      parameters:
+        - schema:
+            type: integer
+          name: idCuenta
+          in: path
+          description: Identificador de la cuenta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+                items:
+                  type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                        format: email
+      responses:
+        '200':
+          description: Los usuarios de la cuenta se actualizan y se devuelven.
+          content:
+            applicaion/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                        format: email
+                      nombre:
+                        type: string
+                      apellido1:
+                        type: string
+                      apellido2:
+                        type: string
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: >
+            Sin permisos suficientes. 
+            También puede dar este código si el ID o e-mail de algunos de los usuarios
+            indicados como entrada no existen.
+
+
+  /plan:
+    get:
+      tags:
+        - Cuentas
+      summary: >
+        Lista todos los planes disponibles (si no se le indica parámetro alguno),
+        el plan indicado (si se usa idPlan como parámetro) o los planes con el nombre
+        especificado. Todos los usuarios tienen acceso a este método.
+      operationId: listPlans
+      parameters:
+        - schema:
+            type: integer
+          name: idPlan
+          in: query
+          description: Identificador del plan.
+        - schema:
+            type: string
+          name: nombre
+          in: query
+          description: Nombre del plan.
+      responses:
+        '200':
+          description: Lista de planes obtenida correctamente, en función de los filtros aplicados.
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Plan'
+        '401':
+          description: Credenciales no válidas o faltantes.
+
     post:
       tags:
         - Cuentas
-      summary: Crear un plan
+      summary: >
+        Este método permite crear un nuevo plan. Solo un administrador puede hacerlo.
       operationId: createPlan
       requestBody:
         required: true
@@ -216,12 +563,29 @@ paths:
               $ref: '#/components/schemas/Plan'
       responses:
         '201':
-          description: Plan creado exitosamente
+          description: Plan creado exitosamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Plan'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes. 
+
+  /plan({idPlan}:    
     put:
       tags:
         - Cuentas
-      summary: Actualizar un plan
+      summary: >
+        Permite actualizar la información de un plan. Solo los administradores puede hacerlo.
       operationId: updatePlan
+      parameters:
+        - schema:
+            type: integer
+          name: idPlan
+          in: path
+          description: Identificador del plan.
       requestBody:
         required: true
         content:
@@ -230,16 +594,37 @@ paths:
               $ref: '#/components/schemas/Plan'
       responses:
         '200':
-          description: Plan actualizado exitosamente
+          description: Plan actualizado correctamente.
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes. 
+
     delete:
       tags:
         - Activos
-      summary: Eliminar un plan
+      summary: >
+        Permite eliminar un plan. Solo un administrador puede hacerlo.
+        Para poder eliminar un plan no puede haber ninguna cuenta asociada a un plan.
       operationId: deletePlan
+      parameters:
+        - schema:
+            type: integer
+          name: idPlan
+          in: path
+          description: Identificador del plan.
       responses:
         '200':
-          description: Plan eliminado correctamente
-  /assets:
+          description: Plan eliminado correctamente.
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: >
+            Sin permisos suficientes. 
+            Este código de salida también se puede obtener si existen cuentas con el plan
+            que se intenta eliminar.
+
+  /activo:
     get:
       tags:
         - Activos
@@ -253,7 +638,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Asset'
+                  $ref: '#/components/schemas/Activo'
     post:
       tags:
         - Activos
@@ -264,7 +649,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Asset'
+              $ref: '#/components/schemas/Activo'
       responses:
         '201':
           description: Activo creado exitosamente
@@ -278,7 +663,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Asset'
+              $ref: '#/components/schemas/Activo'
       responses:
         '200':
           description: Activo actualizado exitosamente
@@ -290,13 +675,14 @@ paths:
       responses:
         '200':
           description: Activo eliminado correctamente
+
 components:
   schemas:
     User:
       type: object
       properties:
         id:
-          type: string
+          type: integer
         email:
           type: string
           format: email
@@ -311,29 +697,43 @@ components:
           enum:
             - CLIENTE
             - ADMINISTRADOR
-    Account:
+    Cuenta:
       type: object
       properties:
         id:
+          type: integer
+        nombre:
           type: string
-        name:
+        direccion:
           type: string
+        nif:
+          type: string
+        fechaAlta:
+          type: date
         plan:
           $ref: '#/components/schemas/Plan'
     Plan:
       type: object
       properties:
         id:
+          type: integer
+        nombre:
           type: string
-        name:
-          type: string
-        maxProducts:
+        maxProductos:
           type: integer
-        maxAssets:
+        maxActivos:
           type: integer
-        maxStorage:
+        maxAlmacenamiento:
           type: integer
-    Product:
+        maxCategoriasProductos:
+          type: integer
+        maxCategoriasActivos:
+          type: integer
+        maxRelaciones:
+          type: integer
+        precio:
+          type: number
+    Producto:
       type: object
       properties:
         id:
@@ -342,7 +742,7 @@ components:
           type: string
         category:
           type: string
-    Asset:
+    Activo:
       type: object
       properties:
         id:

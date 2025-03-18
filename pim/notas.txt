@@ -1,0 +1,46 @@
+Usuarios:
+
+/usuario
+	GET (?idUsuario, ?email)
+	POST
+/usuario/{idUsuario}
+	PUT
+	DELETE
+
+/login
+/passwordreset
+/forgottenpassword
+
+--------------
+
+Cuentas y planes:
+
+/cuenta
+	GET (?idCuenta, ?idUsuario, ?nombre, ?idPlan)
+	POST (admin)
+/cuenta/{idCuenta}
+	PUT (admin) -> permite cambiar de plan
+	DELETE (admin)
+
+/cuenta/{idCuenta}/propietario 
+	GET (todos los que tienen acceso a la cuenta) -> devuelve array de id, nombre, apellidos, email (consultar el µservicio de usuario)
+	POST (admin) -> solo necesita un ID o e-mail
+/cuenta/{idCuenta}/usuarios (admin y propietario)
+	GET -> devuelve array de IDs, nombre, apellidos e email
+	POST -> solo necesita un email o id de cada uno (el propietario no puede dejar de ser usuario)
+
+/plan
+	GET (?idPlan, ?nombre)
+	POST (admin)
+/plan/{idPlan}
+	PUT (admin)
+	DELETE (admin, si no existen cuentas)
+
+
+------------------------------
+
+Productos y sus categorías:
+
+
+
+
