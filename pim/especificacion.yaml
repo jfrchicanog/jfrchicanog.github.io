@@ -246,7 +246,6 @@ paths:
         el ID del plan en el objeto.
         Al crearse la cuenta se asocia el usuario que la crea como propietario y usuario.
         Esta operación solo la puede hacer un administrador.
-      parameters:
       requestBody:
         required: true
         content:
@@ -281,6 +280,7 @@ paths:
             type: integer
           name: idCuenta
           in: path
+          required: true
           description: Identificador de la cuenta
       requestBody:
         required: true
@@ -314,6 +314,7 @@ paths:
             type: integer
           name: idCuenta
           in: path
+          required: true
           description: Identificador de la cuenta
       responses:
         '200':
@@ -327,7 +328,7 @@ paths:
 
   /cuenta/{idCuenta}/propietario:
     get:
-      tag:
+      tags:
         - Cuentas
       summary: >
         Devuelve información del propietario de una cuenta. 
@@ -340,6 +341,7 @@ paths:
             type: integer
           name: idCuenta
           in: path
+          required: true
           description: Identificador de la cuenta
       responses:
         '200':
@@ -366,7 +368,7 @@ paths:
           description: Sin permisos suficientes.
                   
     post:
-      tag:
+      tags:
         - Cuentas
       summary: >
         Actualiza el propietario de una cuenta. 
@@ -379,6 +381,7 @@ paths:
             type: integer
           name: idCuenta
           in: path
+          required: true
           description: Identificador de la cuenta
       requestBody:
         required: true
@@ -420,7 +423,7 @@ paths:
 
   /cuenta/{idCuenta}/usuarios:
     get:
-      tag:
+      tags:
         - Cuentas
       summary: >
         Devuelve la lista de usuarios de una cuenta. 
@@ -432,6 +435,7 @@ paths:
             type: integer
           name: idCuenta
           in: path
+          required: true
           description: Identificador de la cuenta
       responses:
         '200':
@@ -460,7 +464,7 @@ paths:
           description: Sin permisos suficientes.
                   
     post:
-      tag:
+      tags:
         - Cuentas
       summary: >
         Actualiza el listado de usuarios de una cuenta. 
@@ -472,6 +476,7 @@ paths:
             type: integer
           name: idCuenta
           in: path
+          required: true
           description: Identificador de la cuenta
       requestBody:
         required: true
@@ -585,6 +590,7 @@ paths:
             type: integer
           name: idPlan
           in: path
+          required: true
           description: Identificador del plan.
       requestBody:
         required: true
@@ -612,6 +618,7 @@ paths:
             type: integer
           name: idPlan
           in: path
+          required: true
           description: Identificador del plan.
       responses:
         '200':
