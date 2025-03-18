@@ -442,18 +442,18 @@ paths:
                 type: array
                 items:
                   type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                        format: email
-                      nombre:
-                        type: string
-                      apellido1:
-                        type: string
-                      apellido2:
-                        type: string
+                  properties:
+                    id:
+                      type: integer
+                    email:
+                      type: string
+                      format: email
+                    nombre:
+                      type: string
+                    apellido1:
+                      type: string
+                    apellido2:
+                      type: string
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -481,12 +481,12 @@ paths:
               type: array
                 items:
                   type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                        format: email
+                  properties:
+                    id:
+                      type: integer
+                    email:
+                      type: string
+                      format: email
       responses:
         '200':
           description: Los usuarios de la cuenta se actualizan y se devuelven.
@@ -496,18 +496,18 @@ paths:
                 type: array
                 items:
                   type: object
-                    properties:
-                      id:
-                        type: integer
-                      email:
-                        type: string
-                        format: email
-                      nombre:
-                        type: string
-                      apellido1:
-                        type: string
-                      apellido2:
-                        type: string
+                  properties:
+                    id:
+                      type: integer
+                    email:
+                      type: string
+                      format: email
+                    nombre:
+                      type: string
+                    apellido1:
+                      type: string
+                    apellido2:
+                      type: string
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
