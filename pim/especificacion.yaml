@@ -631,58 +631,6 @@ paths:
             Este código de salida también se puede obtener si existen cuentas con el plan
             que se intenta eliminar.
 
-  /activo:
-    get:
-      tags:
-        - Activos
-      summary: Listar activos
-      operationId: listAssets
-      responses:
-        '200':
-          description: Lista de activos obtenida correctamente
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Activo'
-    post:
-      tags:
-        - Activos
-      summary: Crear un activo
-      operationId: createAsset
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Activo'
-      responses:
-        '201':
-          description: Activo creado exitosamente
-    put:
-      tags:
-        - Activos
-      summary: Actualizar un activo
-      operationId: updateAsset
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Activo'
-      responses:
-        '200':
-          description: Activo actualizado exitosamente
-    delete:
-      tags:
-        - Activos
-      summary: Eliminar un activo
-      operationId: deleteAsset
-      responses:
-        '200':
-          description: Activo eliminado correctamente
-
 #####################
   /producto:
     get:
@@ -696,18 +644,28 @@ paths:
         - name: idProducto
           in: query
           schema:
-            type: string
+            type: integer
         - name: idCuenta
           in: query
           schema:
-            type: string
+            type: integer
         - name: idCategoria
           in: query
           schema:
-            type: string
+            type: integer
       responses:
         "200":
           description: Lista de productos obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Producto'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.           
 
     post:
       tags:
@@ -716,18 +674,36 @@ paths:
       description: |
         Usuarios con acceso a la cuenta pueden crear productos.
         El producto incluye las categorías y también las relaciones.
+        Esta operación debe comprobar que no se exceden los límites fijados por el plan de la cuenta.
+      parameters:
+        - name: idCuenta
+          in: query
+          required: true
+          schema:
+            type: integer
+
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                idCuenta:
-                  type: string
+              $ref: '#/components/schemas/Producto'
+
       responses:
         "201":
           description: Producto creado correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Producto'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: >
+            Sin permisos suficientes.
+            También se puede dar este código si ya hay otro producto con el mismo GTIN.
 
   /producto/{idProducto}:
     put:
@@ -740,10 +716,26 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
       responses:
         "200":
           description: Producto actualizado correctamente
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: >
+            Sin permisos suficientes.
+            También se puede dar este código si ya hay otro producto con el mismo GTIN.
     
     delete:
       tags:
@@ -754,16 +746,335 @@ paths:
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         "200":
           description: Producto eliminado correctamente
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
   /categoria-producto:
     get:
       tags:
         - Productos
-      summary: Obtener categorías de productos
+      summary: >
+        Obtener categorías de productos. Uno de los dos parámetros de consulta debe estar.
+        En el caso de ser el identificador de la categoría, esta debe pertenecer a una
+        cuenta a la que el usuario esté asociado.
+      parameters:
+        - name: idCategoria
+          in: query
+          schema:
+            type: integer
+        - name: idCuenta
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Categorías obtenidas correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+
+    post:
+      tags:
+        - Productos
+      summary: >
+        Crear una categoría de producto. 
+        Solo lo puede hacer un usuario asociado a la cuenta que aparece como parámetro.
+        Esta operación debe comprobar que no se exceden los límites fijados por el plan de la cuenta.
+      parameters:
+        - name: idCuenta
+          required: true
+          in: query
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+
+      responses:
+        "201":
+          description: Categoría creada correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Categoria'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+
+  /categoria-producto/{idCategoria}:
+    put:
+      tags:
+        - Productos
+      summary: Modificar una categoría de producto. Solo si el usuario está asociado a la cuenta a la que pertenece.
+      parameters:
+        - name: idCategoria
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+      responses:
+        "200":
+          description: Categoría actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+
+    delete:
+      tags:
+        - Productos
+      summary: >
+        Eliminar una categoría de producto. Solo si el usuario está asociado a la cuenta a la que pertenece.
+        Solo se puede eliminar si no hay productos asociados a la categoría.
+      description: Solo si no se usa.
+      parameters:
+        - name: idCategoria
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Categoría eliminada correctamente
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: >
+            Sin permisos suficientes. 
+            También se puede devolver este código cuando hay productos asociados a la categoría.
+
+  /relacion:
+    get:
+      tags:
+        - Productos
+      summary: >
+        Obtener relaciones de productos. Uno de los dos parámetros de consulta debe estar.
+        En el caso de ser el identificador de la relación, esta debe pertenecer a una
+        cuenta a la que el usuario esté asociado.
+      parameters:
+        - name: idRelacion
+          in: query
+          schema:
+            type: integer
+        - name: idCuenta
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Relaciones obtenidas correctamente.
+          content:
+            schema:
+              type: array
+              items:
+                schema:
+                  $ref: '#/components/schemas/Relacion'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes. 
+            
+
+    post:
+      tags:
+        - Productos
+      summary: >
+        Crear una relación. 
+        Solo lo puede hacer un usuario asociado a la cuenta indicada como parámetro.
+        Esta operación debe comprobar que no se exceden los límites fijados por el plan de la cuenta.
+      parameters:
+        - name: idCuenta
+          in: query
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Relacion'
+      responses:
+        "201":
+          description: Relación creada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Relacion'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes. 
+
+  /relacion/{idRelacion}:
+    put:
+      tags:
+        - Productos
+      summary: Modificar una relación. Solo si el usuario está asociado a la cuenta a la que pertenece.
+      parameters:
+        - name: idRelacion
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Relacion'
+      responses:
+        "200":
+          description: Relación actualizada correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Relacion'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+
+    delete:
+      tags:
+        - Productos
+      summary: Eliminar una relación. Solo lo puede hacer un usuario asociado a la cuenta a la que pertenece la relación.
+      description: Solo se puede eliminar una relación si no se usa entre ninguna pareja de productos.
+      parameters:
+        - name: idRelacion
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Relación eliminada correctamente
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+
+
+#####################
+  /activo:
+    get:
+      tags:
+        - Activos
+      summary: Obtener activos
+      description: |
+        Uno de los parámetros debe estar presente.
+        En el caso de `idActivo`, `idCategoria` o `idProducto`, deben pertenecer a una cuenta donde el usuario tenga acceso.
+      parameters:
+        - name: idActivo
+          in: query
+          schema:
+            type: string
+        - name: idCuenta
+          in: query
+          schema:
+            type: string
+        - name: idCategoria
+          in: query
+          schema:
+            type: string
+        - name: idProducto
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de activos obtenida correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activo'
+
+    post:
+      tags:
+        - Activos
+      summary: Crear un activo
+      description: |
+        Usuarios con acceso a la cuenta pueden crear activos.
+        El activo incluye las categorías y los productos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idCuenta:
+                  type: string
+      responses:
+        "201":
+          description: Activo creado correctamente
+
+  /activo/{idActivo}:
+    put:
+      tags:
+        - Activos
+      summary: Modificar un activo
+      description: Se pueden modificar las categorías y los productos asociados.
+      parameters:
+        - name: idActivo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Activo actualizado correctamente
+    
+    delete:
+      tags:
+        - Activos
+      summary: Eliminar un activo
+      parameters:
+        - name: idActivo
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Activo eliminado correctamente
+
+  /categoria-activo:
+    get:
+      tags:
+        - Activos
+      summary: Obtener categorías de activos
       parameters:
         - name: idCategoria
           in: query
@@ -779,8 +1090,8 @@ paths:
 
     post:
       tags:
-        - Productos
-      summary: Crear una categoría de producto
+        - Activos
+      summary: Crear una categoría de activo
       requestBody:
         required: true
         content:
@@ -794,11 +1105,11 @@ paths:
         "201":
           description: Categoría creada correctamente
 
-  /categoria-producto/{idCategoria}:
+  /categoria-activo/{idCategoria}:
     put:
       tags:
-        - Productos
-      summary: Modificar una categoría de producto
+        - Activos
+      summary: Modificar una categoría de activo
       parameters:
         - name: idCategoria
           in: path
@@ -811,8 +1122,8 @@ paths:
 
     delete:
       tags:
-        - Productos
-      summary: Eliminar una categoría de producto
+        - Activos
+      summary: Eliminar una categoría de activo
       description: Solo si no se usa.
       parameters:
         - name: idCategoria
@@ -824,76 +1135,8 @@ paths:
         "200":
           description: Categoría eliminada correctamente
 
-  /relacion:
-    get:
-      tags:
-        - Productos
-      summary: Obtener relaciones
-      parameters:
-        - name: idRelacion
-          in: query
-          schema:
-            type: string
-        - name: nombre
-          in: query
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Relaciones obtenidas correctamente
 
-    post:
-      tags:
-        - Productos
-      summary: Crear una relación
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                idCuenta:
-                  type: string
-      responses:
-        "201":
-          description: Relación creada correctamente
-
-  /relacion/{idRelacion}:
-    put:
-      tags:
-        - Productos
-      summary: Modificar una relación
-      parameters:
-        - name: idRelacion
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Relación actualizada correctamente
-
-    delete:
-      tags:
-        - Productos
-      summary: Eliminar una relación
-      description: Solo si no se usa entre ninguna pareja de productos.
-      parameters:
-        - name: idRelacion
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Relación eliminada correctamente
-
-
-
-#####################
-
-
+####################
 components:
   schemas:
     User:
@@ -951,15 +1194,51 @@ components:
           type: integer
         precio:
           type: number
+
     Producto:
       type: object
       properties:
         id:
+          type: integer
+        gtin:
           type: string
-        name:
+        sku:
           type: string
-        category:
+        nombre:
           type: string
+        textoCorto:
+          type: string
+        creado:
+          type: string
+          format: date-time
+        modificado:
+          type: string
+          format: date-time
+        miniatura:
+          type: string
+          format: byte
+        categorias:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categoria'
+
+
+    Categoria:
+      type: object
+      properties:
+        id: 
+          type: integer
+        nombre: 
+          type: string
+
+    Relacion:
+      type: object
+      properties:
+        nombre:
+          type: string
+        descripcion:
+          type: string
+
     Activo:
       type: object
       properties:

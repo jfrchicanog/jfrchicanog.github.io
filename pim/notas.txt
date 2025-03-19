@@ -40,6 +40,46 @@ Cuentas y planes:
 
 Productos y sus categorías:
 
+/producto
+	GET (?idProducto, ?idCuenta, ?idCategoria) <- uno tiene que estar. En el caso del producto o categoría tiene que pertenecer a una cuenta donde el usuario tenga acceso.
+	POST (?idCuenta (req) <- usuarios con acceso a la cuenta, el proudcto incluye las categorías, también las relaciones
+
+/producto/{idProducto}
+	PUT <- se pueden modificar las categorías y ls relaciones
+	DELETE
+
+/categoria-producto
+	GET (?idCategoria,?idCuenta)
+	POST (?idCuenta (req))
+
+/categoria-producto/{idCategoria}
+	DELETE <- solo si no se usa
+	PUT
+
+/relacion
+	GET (?idRelacion, ?nombre, ?idCuenta)
+	POST (?idCuenta (req))
+
+/relacion/{idRelacion}
+	DELETE <- solo si no se usa entre ninguna pareja de productos
+	PUT	
 
 
+Activos y sus categorías:
+
+/activo
+	GET (?idActivo, ?idCuenta, ?idCategoria, ?idProducto) <- uno tiene que estar. En el caso del activo, categoría o producto tiene que pertenecer a una cuenta donde el usuario tenga acceso.
+	POST (?idCuenta (req) <- usuarios con acceso a la cuenta, el activo incluye las categorías y los productos
+
+/activo/{idActivo}
+	PUT <- se pueden modificar las categorías y los productos
+	DELETE
+
+/categoria-activo
+	GET (?idCategoria,?idCuenta)
+	POST (?idCuenta (req))
+
+/categoria-activo/{idCategoria}
+	DELETE <- solo si no se usa
+	PUT
 
