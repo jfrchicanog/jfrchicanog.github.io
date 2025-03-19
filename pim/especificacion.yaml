@@ -686,6 +686,8 @@ paths:
 #####################
   /producto:
     get:
+      tags:
+        - Productos
       summary: Obtener productos
       description: |
         Uno de los parámetros debe estar presente. 
@@ -708,6 +710,8 @@ paths:
           description: Lista de productos obtenida correctamente
 
     post:
+      tags:
+        - Productos
       summary: Crear un producto
       description: |
         Usuarios con acceso a la cuenta pueden crear productos.
@@ -727,6 +731,8 @@ paths:
 
   /producto/{idProducto}:
     put:
+      tags:
+        - Productos
       summary: Modificar un producto
       description: Se pueden modificar las categorías y las relaciones.
       parameters:
@@ -740,6 +746,8 @@ paths:
           description: Producto actualizado correctamente
     
     delete:
+      tags:
+        - Productos
       summary: Eliminar un producto
       parameters:
         - name: idProducto
@@ -753,6 +761,8 @@ paths:
 
   /categoria-producto:
     get:
+      tags:
+        - Productos
       summary: Obtener categorías de productos
       parameters:
         - name: idCategoria
@@ -768,6 +778,8 @@ paths:
           description: Categorías obtenidas correctamente
 
     post:
+      tags:
+        - Productos
       summary: Crear una categoría de producto
       requestBody:
         required: true
@@ -784,6 +796,8 @@ paths:
 
   /categoria-producto/{idCategoria}:
     put:
+      tags:
+        - Productos
       summary: Modificar una categoría de producto
       parameters:
         - name: idCategoria
@@ -796,6 +810,8 @@ paths:
           description: Categoría actualizada correctamente
 
     delete:
+      tags:
+        - Productos
       summary: Eliminar una categoría de producto
       description: Solo si no se usa.
       parameters:
@@ -810,6 +826,8 @@ paths:
 
   /relacion:
     get:
+      tags:
+        - Productos
       summary: Obtener relaciones
       parameters:
         - name: idRelacion
@@ -825,6 +843,8 @@ paths:
           description: Relaciones obtenidas correctamente
 
     post:
+      tags:
+        - Productos
       summary: Crear una relación
       requestBody:
         required: true
@@ -841,6 +861,8 @@ paths:
 
   /relacion/{idRelacion}:
     put:
+      tags:
+        - Productos
       summary: Modificar una relación
       parameters:
         - name: idRelacion
@@ -853,6 +875,8 @@ paths:
           description: Relación actualizada correctamente
 
     delete:
+      tags:
+        - Productos
       summary: Eliminar una relación
       description: Solo si no se usa entre ninguna pareja de productos.
       parameters:
