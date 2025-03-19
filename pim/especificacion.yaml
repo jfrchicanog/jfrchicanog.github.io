@@ -21,6 +21,8 @@ paths:
       tags:
         - Usuarios
       summary: Iniciar sesión
+      description: >
+        Si las credenciales son correctas se genera un JWT para acceder al resto de endpoints.
       operationId: loginUser
       requestBody:
         required: true
@@ -51,7 +53,12 @@ paths:
     post:
       tags:
         - Usuarios
-      summary: Solicitar restablecimiento de contraseña
+      summary: Solicitar restablecimiento de contraseña.
+      description: >
+        Este endpoint se llama para solicitar un correo de restablecimiento de contraseña.
+        En dicho correo debería ir un enlace que dirija al usuario al frontend de la aplicación con un
+        token de seguridad. El frontend pedirá la nueva contraseña y mandará tanto el token como
+        la contraseña al endpoint `/passwordreset`.
       operationId: forgotPassword
       requestBody:
         required: true
@@ -71,6 +78,8 @@ paths:
       tags:
         - Usuarios
       summary: Restablecer contraseña
+      description: >
+        Aquí se recibe la nueva contraseña y el token de seguridad para el restablecimiento de la contraseña de un usuario.
       operationId: resetPassword
       requestBody:
         required: true
@@ -92,7 +101,11 @@ paths:
     get:
       tags:
         - Usuarios
-      summary: Listar usuarios
+      summary: Listar usuarios.
+      description: >
+        Devuelve una lista de usuarios. Solo un administrador puede usar los parámetros.
+        Su lo usa sin parámetros devuelve todos los usuarios.
+        Si quien accede no es un administrador solo se devuelve la información de ese usuario y no puede usar parámetros.
       operationId: listUsers
       responses:
         '200':
@@ -120,6 +133,8 @@ paths:
           description: Permite buscar usuarios por su identificador
     post:
       summary: Añadir usuario
+      description: >
+        Solo un administrador puede usar este método.
       tags:
         - Usuarios
       operationId: addUser
@@ -144,6 +159,8 @@ paths:
   '/usuario/{idUsuario}':
     delete:
       summary: Eliminar usuario
+      description: >
+        Solo un administrador puede hacerlo.
       tags:
         - Usuarios
       operationId: removeUser
@@ -164,6 +181,8 @@ paths:
     
     put:
       summary: Actualizar usuario
+      description: >
+        El administrador puede modificar datos de cualquier usuario. Los clientes solo los suyos.
       tags:
         - Usuarios
       operationId: put-usuario-idUsuario
@@ -194,6 +213,7 @@ paths:
         - Cuentas
       summary: >
         Consulta cuentas. 
+      description: >
         Puede obtenerlas todas (solo si es administrador quien hace la consulta),
         la que tiene el idCuenta indicado en el parámetro de consulta
         (solo si es administrador o es un usuario asociado a la cuenta),
@@ -241,7 +261,9 @@ paths:
       tags:
         - Cuentas
       summary: >
-        Añade una cuenta nueva (solo para administradores). 
+        Añade una cuenta nueva
+      descripcion: >
+        Este métoco solo lo pueden usar administradores.
         El plan no tiene que estar completo, basta con que aparezca
         el ID del plan en el objeto.
         Al crearse la cuenta se asocia el usuario que la crea como propietario y usuario.
@@ -271,7 +293,9 @@ paths:
       tags:
         - Cuentas
       summary: >
-        Modifica una cuenta (solo para administradores). 
+        Modifica una cuenta
+      description: >
+        Este método solo lo pueden usar administradores.
         El plan no tiene que estar completo, basta con que aparezca
         el ID del plan en el objeto. Esto permite actualizar el plan asociado a una cuenta.
         Esta operació solo la puede hacer un administrador.
@@ -304,8 +328,8 @@ paths:
     delete:
       tags:
         - Cuentas
-      summary: >
-        Elimina una cuenta. 
+      summary: Elimina una cuenta. 
+      description: >
         Para poder eliminarla no puede tener tener productos, relaciones, actios o categorías.
         Conocer esto implica llamar a los endpoints de los otros microservicios.
         Esta operación solo la puede hacer un administrador.
@@ -330,8 +354,8 @@ paths:
     get:
       tags:
         - Cuentas
-      summary: >
-        Devuelve información del propietario de una cuenta. 
+      summary: Devuelve información del propietario de una cuenta
+      description: >
         Este microservicio solo guarda el ID, debe consultar
         el microservicio de gestión de usuarios para obtener el resto de información.
         Solo lo pueden consultar personas con acceso a la cuenta (administrador y usuarios 
@@ -370,8 +394,8 @@ paths:
     post:
       tags:
         - Cuentas
-      summary: >
-        Actualiza el propietario de una cuenta. 
+      summary: Actualiza el propietario de una cuenta.
+      description: >
         Solo hay que indicar el ID o el e-mail del nuevo propietario.
         Se debe comprobar que el usuario existe.
         Si el propietario no es un usuario, se añade también como usuario.
@@ -425,8 +449,8 @@ paths:
     get:
       tags:
         - Cuentas
-      summary: >
-        Devuelve la lista de usuarios de una cuenta. 
+      summary: Devuelve la lista de usuarios de una cuenta. 
+      description: >
         Este microservicio solo guarda los IDs de los usuarios, se debe consultar
         el microservicio de gestión de usuarios para obtener el resto de información.
         Solo lo pueden consultar el administrador y el propietario de la cuenta.
@@ -466,8 +490,8 @@ paths:
     post:
       tags:
         - Cuentas
-      summary: >
-        Actualiza el listado de usuarios de una cuenta. 
+      summary: Actualiza el listado de usuarios de una cuenta. 
+      description: >
         Solo hay que indicar el ID o el e-mail de cada uno de los usuarios (cualquier de ellos).
         El propietario siempre tiene que ser un usuario, no puede eliminarse usando este método.
         Esta operación la puede realizar un administrador y el propietario de la cuenta.
@@ -526,7 +550,8 @@ paths:
     get:
       tags:
         - Cuentas
-      summary: >
+      summary: Lista los planes
+      description: >
         Lista todos los planes disponibles (si no se le indica parámetro alguno),
         el plan indicado (si se usa idPlan como parámetro) o los planes con el nombre
         especificado. Todos los usuarios tienen acceso a este método.
@@ -557,8 +582,8 @@ paths:
     post:
       tags:
         - Cuentas
-      summary: >
-        Este método permite crear un nuevo plan. Solo un administrador puede hacerlo.
+      summary: Este método permite crear un nuevo plan
+      description: Solo un administrador puede hacerlo.
       operationId: createPlan
       requestBody:
         required: true
@@ -578,12 +603,12 @@ paths:
         '403':
           description: Sin permisos suficientes. 
 
-  /plan({idPlan}:    
+  /plan/{idPlan}:    
     put:
       tags:
         - Cuentas
-      summary: >
-        Permite actualizar la información de un plan. Solo los administradores puede hacerlo.
+      summary: Permite actualizar la información de un plan. 
+      description: Solo los administradores puede hacerlo.
       operationId: updatePlan
       parameters:
         - schema:
@@ -608,9 +633,10 @@ paths:
 
     delete:
       tags:
-        - Activos
-      summary: >
-        Permite eliminar un plan. Solo un administrador puede hacerlo.
+        - Cuentas
+      summary: Permite eliminar un plan. 
+      description: >
+        Solo un administrador puede hacerlo.
         Para poder eliminar un plan no puede haber ninguna cuenta asociada a un plan.
       operationId: deletePlan
       parameters:
@@ -740,7 +766,8 @@ paths:
     delete:
       tags:
         - Productos
-      summary: Eliminar un producto
+      summary: Eliminar un producto.
+      description: Solo lo puede hacer un usuario que tenga acceso a la cuenta donde se encuentra el producto.
       parameters:
         - name: idProducto
           in: path
@@ -759,8 +786,9 @@ paths:
     get:
       tags:
         - Productos
-      summary: >
-        Obtener categorías de productos. Uno de los dos parámetros de consulta debe estar.
+      summary: Obtener categorías de productos. 
+      description: >
+        Uno de los dos parámetros de consulta debe estar.
         En el caso de ser el identificador de la categoría, esta debe pertenecer a una
         cuenta a la que el usuario esté asociado.
       parameters:
@@ -877,9 +905,10 @@ paths:
     get:
       tags:
         - Productos
-      summary: >
-        Obtener relaciones de productos. Uno de los dos parámetros de consulta debe estar.
-        En el caso de ser el identificador de la relación, esta debe pertenecer a una
+      summary: Obtener relaciones de productos. 
+      description: >
+        Uno de los dos parámetros de consulta debe estar.
+        En el caso de ser el identificador de la relación esta debe pertenecer a una
         cuenta a la que el usuario esté asociado.
       parameters:
         - name: idRelacion
@@ -908,8 +937,8 @@ paths:
     post:
       tags:
         - Productos
-      summary: >
-        Crear una relación. 
+      summary: Crear una relación. 
+      description: >
         Solo lo puede hacer un usuario asociado a la cuenta indicada como parámetro.
         Esta operación debe comprobar que no se exceden los límites fijados por el plan de la cuenta.
       parameters:
@@ -940,7 +969,9 @@ paths:
     put:
       tags:
         - Productos
-      summary: Modificar una relación. Solo si el usuario está asociado a la cuenta a la que pertenece.
+      summary: Modificar una relación. 
+      description: >
+        Solo lo puede hacer un usuario que esté asociado a la cuenta a la que pertenece.
       parameters:
         - name: idRelacion
           in: path
@@ -968,8 +999,10 @@ paths:
     delete:
       tags:
         - Productos
-      summary: Eliminar una relación. Solo lo puede hacer un usuario asociado a la cuenta a la que pertenece la relación.
-      description: Solo se puede eliminar una relación si no se usa entre ninguna pareja de productos.
+      summary: Eliminar una relación.
+      description: >
+        Solo se puede eliminar una relación si no se usa entre ninguna pareja de productos.
+        Solo lo puede hacer un usuario asociado a la cuenta a la que pertenece la relación.
       parameters:
         - name: idRelacion
           in: path
@@ -1301,7 +1334,7 @@ components:
                 $ref: '#/components/schemas/Relacion'
               idProductoOrigen:
                 type: integer
-              idProductoOrigen:
+              idProductoDestino:
                 type: integer
 
 
