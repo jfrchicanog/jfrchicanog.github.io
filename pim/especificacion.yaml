@@ -789,8 +789,8 @@ paths:
     post:
       tags:
         - Productos
-      summary: >
-        Crear una categoría de producto. 
+      summary: Crear una categoría de producto. 
+      description: >
         Solo lo puede hacer un usuario asociado a la cuenta que aparece como parámetro.
         Esta operación debe comprobar que no se exceden los límites fijados por el plan de la cuenta.
       parameters:
@@ -824,7 +824,8 @@ paths:
     put:
       tags:
         - Productos
-      summary: Modificar una categoría de producto. Solo si el usuario está asociado a la cuenta a la que pertenece.
+      summary: Modificar una categoría de producto. 
+      description: Solo si el usuario está asociado a la cuenta a la que pertenece.
       parameters:
         - name: idCategoria
           in: path
@@ -852,10 +853,10 @@ paths:
     delete:
       tags:
         - Productos
-      summary: >
-        Eliminar una categoría de producto. Solo si el usuario está asociado a la cuenta a la que pertenece.
+      summary: Eliminar una categoría de producto. 
+      description: |
+        El usuario que realiza la operación debe estar asociado a la cuenta a la que pertenece.
         Solo se puede eliminar si no hay productos asociados a la categoría.
-      description: Solo si no se usa.
       parameters:
         - name: idCategoria
           in: path
@@ -993,6 +994,7 @@ paths:
       description: |
         Uno de los parámetros debe estar presente.
         En el caso de `idActivo`, `idCategoria` o `idProducto`, deben pertenecer a una cuenta donde el usuario tenga acceso.
+        En el caso de `idCuenta`, el usuario debe estar asociado a ella.
       parameters:
         - name: idActivo
           in: query
@@ -1019,26 +1021,41 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Activo'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
     post:
       tags:
         - Activos
       summary: Crear un activo
       description: |
-        Usuarios con acceso a la cuenta pueden crear activos.
-        El activo incluye las categorías y los productos.
+        Solo los usuarios con acceso a la cuenta indicada pueden crear activos.
+        El activo incluye las categorías y los productos con los que se relaciona.
+      parameters:
+        - name: idCuenta
+          in: query
+          required: true
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                idCuenta:
-                  type: string
+              $ref: '#/components/schemas/Activo'
       responses:
         "201":
           description: Activo creado correctamente
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activo'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
   /activo/{idActivo}:
     put:
@@ -1055,11 +1072,20 @@ paths:
       responses:
         "200":
           description: Activo actualizado correctamente
-    
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activo'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
+
     delete:
       tags:
         - Activos
-      summary: Eliminar un activo
+      summary: Eliminar un activo.
+      description: Solo lo puede hacer un usuario asociado a la cuenta del activo.
       parameters:
         - name: idActivo
           in: path
@@ -1069,62 +1095,103 @@ paths:
       responses:
         "200":
           description: Activo eliminado correctamente
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
   /categoria-activo:
     get:
       tags:
         - Activos
       summary: Obtener categorías de activos
+      description: >
+        Se debe indicar el parámetro `idCuenta` o `idCategoria`.
+        En ambos casos el usuario tiene que tener acceso a la cuenta asociada.
       parameters:
         - name: idCategoria
           in: query
           schema:
-            type: string
+            type: integer
         - name: idCuenta
           in: query
           schema:
-            type: string
+            type: integer
       responses:
         "200":
           description: Categorías obtenidas correctamente
+          content:
+            application/json:
+              type: array
+              items:
+                schema:
+                  $ref: '#/components/schemas/Categoria'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
     post:
       tags:
         - Activos
       summary: Crear una categoría de activo
+      description: >
+        Solo puede crear un activo un usuario asociado a la cuenta que se indica como parámetro.
+      parameters:
+        - name: idCuenta
+          in: query
+          schema:
+            type: integer
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                idCuenta:
-                  type: string
+              $ref: '#/components/schemas/Categoria'
       responses:
         "201":
           description: Categoría creada correctamente
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
   /categoria-activo/{idCategoria}:
     put:
       tags:
         - Activos
-      summary: Modificar una categoría de activo
+      summary: Modificar una categoría de activo.
+      description: >
+        Solo puede hacer la modificación un usuario que esté asociado a la cuenta a la que pertenece la categoría.
       parameters:
         - name: idCategoria
           in: path
           required: true
           schema:
-            type: string
+            type: integer
       responses:
         "200":
           description: Categoría actualizada correctamente
+          content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
     delete:
       tags:
         - Activos
       summary: Eliminar una categoría de activo
-      description: Solo si no se usa.
+      description: >
+        Se puede eliminar solo si no se usa en ningún activo. Solo puede hacerlo un usuario que
+        esté asociado a la cuenta a la que pertenece el activo.
       parameters:
         - name: idCategoria
           in: path
@@ -1134,6 +1201,10 @@ paths:
       responses:
         "200":
           description: Categoría eliminada correctamente
+        '401':
+          description: Credenciales no válidas o faltantes.
+        '403':
+          description: Sin permisos suficientes.
 
 
 ####################
@@ -1221,6 +1292,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Categoria'
+        relaciones:
+          type: array
+          items:
+            type: object
+            properties:
+              relacion:
+                $ref: '#/components/schemas/Relacion'
+              idProductoOrigen:
+                type: integer
+              idProductoOrigen:
+                type: integer
 
 
     Categoria:
@@ -1234,6 +1316,8 @@ components:
     Relacion:
       type: object
       properties:
+        id:
+          type: integer
         nombre:
           type: string
         descripcion:
