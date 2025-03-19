@@ -36,7 +36,6 @@ Cuentas y planes:
 	PUT (admin)
 	DELETE (admin, si no existen cuentas)
 
-
 ------------------------------
 
 Productos y sus categorías:

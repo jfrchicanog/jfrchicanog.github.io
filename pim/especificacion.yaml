@@ -683,6 +683,193 @@ paths:
         '200':
           description: Activo eliminado correctamente
 
+#####################
+  /producto:
+    get:
+      summary: Obtener productos
+      description: |
+        Uno de los parámetros debe estar presente. 
+        En el caso de `idProducto` o `idCategoria`, deben pertenecer a una cuenta donde el usuario tenga acceso.
+      parameters:
+        - name: idProducto
+          in: query
+          schema:
+            type: string
+        - name: idCuenta
+          in: query
+          schema:
+            type: string
+        - name: idCategoria
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de productos obtenida correctamente
+
+    post:
+      summary: Crear un producto
+      description: |
+        Usuarios con acceso a la cuenta pueden crear productos.
+        El producto incluye las categorías y también las relaciones.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idCuenta:
+                  type: string
+      responses:
+        "201":
+          description: Producto creado correctamente
+
+  /producto/{idProducto}:
+    put:
+      summary: Modificar un producto
+      description: Se pueden modificar las categorías y las relaciones.
+      parameters:
+        - name: idProducto
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto actualizado correctamente
+    
+    delete:
+      summary: Eliminar un producto
+      parameters:
+        - name: idProducto
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado correctamente
+
+  /categoria-producto:
+    get:
+      summary: Obtener categorías de productos
+      parameters:
+        - name: idCategoria
+          in: query
+          schema:
+            type: string
+        - name: idCuenta
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Categorías obtenidas correctamente
+
+    post:
+      summary: Crear una categoría de producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idCuenta:
+                  type: string
+      responses:
+        "201":
+          description: Categoría creada correctamente
+
+  /categoria-producto/{idCategoria}:
+    put:
+      summary: Modificar una categoría de producto
+      parameters:
+        - name: idCategoria
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Categoría actualizada correctamente
+
+    delete:
+      summary: Eliminar una categoría de producto
+      description: Solo si no se usa.
+      parameters:
+        - name: idCategoria
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Categoría eliminada correctamente
+
+  /relacion:
+    get:
+      summary: Obtener relaciones
+      parameters:
+        - name: idRelacion
+          in: query
+          schema:
+            type: string
+        - name: nombre
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Relaciones obtenidas correctamente
+
+    post:
+      summary: Crear una relación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                idCuenta:
+                  type: string
+      responses:
+        "201":
+          description: Relación creada correctamente
+
+  /relacion/{idRelacion}:
+    put:
+      summary: Modificar una relación
+      parameters:
+        - name: idRelacion
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Relación actualizada correctamente
+
+    delete:
+      summary: Eliminar una relación
+      description: Solo si no se usa entre ninguna pareja de productos.
+      parameters:
+        - name: idRelacion
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Relación eliminada correctamente
+
+
+
+#####################
+
+
 components:
   schemas:
     User:
