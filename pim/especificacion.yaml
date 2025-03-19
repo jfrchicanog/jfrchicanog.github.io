@@ -36,6 +36,7 @@ paths:
                   format: email
                 password:
                   type: string
+      security: []
       responses:
         '200':
           description: Token JWT generado exitosamente
@@ -70,6 +71,7 @@ paths:
                 email:
                   type: string
                   format: email
+      security: []
       responses:
         '200':
           description: Token de restablecimiento enviado al correo electrónico
@@ -92,6 +94,7 @@ paths:
                   type: string
                 newPassword:
                   type: string
+      security: []
       responses:
         '200':
           description: Contraseña actualizada correctamente
@@ -107,6 +110,17 @@ paths:
         Su lo usa sin parámetros devuelve todos los usuarios.
         Si quien accede no es un administrador solo se devuelve la información de ese usuario y no puede usar parámetros.
       operationId: listUsers
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: email
+          description: Permite buscar usuarios por correo electrónico
+        - schema:
+            type: integer
+          in: query
+          name: id
+          description: Permite buscar usuarios por su identificador
       responses:
         '200':
           description: Lista de usuarios obtenida correctamente
@@ -120,17 +134,7 @@ paths:
           description: Credenciales no válidas o faltantes
         '403':
           description: Sin permisos suficientes
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: email
-          description: Permite buscar usuarios por correo electrónico
-        - schema:
-            type: integer
-          in: query
-          name: id
-          description: Permite buscar usuarios por su identificador
+      
     post:
       summary: Añadir usuario
       description: >
@@ -1367,4 +1371,12 @@ components:
           type: string
         url:
           type: string
-  securitySchemes: {}
+  
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []
