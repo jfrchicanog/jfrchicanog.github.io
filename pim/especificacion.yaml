@@ -298,7 +298,7 @@ paths:
         Este método solo lo pueden usar administradores.
         El plan no tiene que estar completo, basta con que aparezca
         el ID del plan en el objeto. Esto permite actualizar el plan asociado a una cuenta.
-        Esta operació solo la puede hacer un administrador.
+        Esta operación solo la puede hacer un administrador.
       parameters:
         - schema:
             type: integer
@@ -330,7 +330,7 @@ paths:
         - Cuentas
       summary: Elimina una cuenta. 
       description: >
-        Para poder eliminarla no puede tener tener productos, relaciones, actios o categorías.
+        Para poder eliminarla no puede tener productos, relaciones, activos o categorías.
         Conocer esto implica llamar a los endpoints de los otros microservicios.
         Esta operación solo la puede hacer un administrador.
       parameters:
@@ -356,7 +356,7 @@ paths:
         - Cuentas
       summary: Devuelve información del propietario de una cuenta
       description: >
-        Este microservicio solo guarda el ID, debe consultar
+        Este microservicio solo usa el ID, debe consultar
         el microservicio de gestión de usuarios para obtener el resto de información.
         Solo lo pueden consultar personas con acceso a la cuenta (administrador y usuarios 
         asociados a la cuenta).
@@ -396,7 +396,7 @@ paths:
         - Cuentas
       summary: Actualiza el propietario de una cuenta.
       description: >
-        Solo hay que indicar el ID o el e-mail del nuevo propietario.
+        Hay que indicar el ID y/o el e-mail del nuevo propietario.
         Se debe comprobar que el usuario existe.
         Si el propietario no es un usuario, se añade también como usuario.
         Esta operación solo puede realizarla un administrador.
@@ -492,7 +492,7 @@ paths:
         - Cuentas
       summary: Actualiza el listado de usuarios de una cuenta. 
       description: >
-        Solo hay que indicar el ID o el e-mail de cada uno de los usuarios (cualquier de ellos).
+        Solo hay que indicar el ID o el e-mail de cada uno de los usuarios (cualquiera de ellos).
         El propietario siempre tiene que ser un usuario, no puede eliminarse usando este método.
         Esta operación la puede realizar un administrador y el propietario de la cuenta.
       parameters:
