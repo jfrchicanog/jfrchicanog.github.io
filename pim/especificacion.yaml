@@ -1364,13 +1364,21 @@ components:
       type: object
       properties:
         id:
+          type: integer
+        nombre:
           type: string
-        name:
+        tipo:
           type: string
-        type:
-          type: string
+        tamanio:
+          type: integer
         url:
           type: string
+          format: uri
+        productos:
+          type: array
+          items:
+            type: integer
+
   
   securitySchemes:
     jwt:
