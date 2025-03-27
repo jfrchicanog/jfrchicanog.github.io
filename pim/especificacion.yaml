@@ -1378,6 +1378,10 @@ components:
         url:
           type: string
           format: uri
+        categorias:
+          type: array
+          items:
+            $ref: '#/components/schemas/Categoria'
         productos:
           type: array
           items:
