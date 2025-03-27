@@ -683,6 +683,10 @@ paths:
           in: query
           schema:
             type: integer
+        - name: gtin
+          in: query
+          schema:
+            type: string    
       responses:
         "200":
           description: Lista de productos obtenida correctamente
