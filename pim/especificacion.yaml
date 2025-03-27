@@ -206,6 +206,10 @@ paths:
       responses:
         '200':
           description: Usuario actualizado
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/User'
         '401':
           description: Credenciales no válidas o faltantes
         '403':
@@ -630,6 +634,10 @@ paths:
       responses:
         '200':
           description: Plan actualizado correctamente.
+          content:
+            application/json:
+              schemas:
+                $ref: '#/components/schemas/Plan'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -1193,9 +1201,9 @@ paths:
         "201":
           description: Categoría creada correctamente
           content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Categoria'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -1218,9 +1226,9 @@ paths:
         "200":
           description: Categoría actualizada correctamente
           content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Categoria'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Categoria'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
