@@ -636,7 +636,7 @@ paths:
           description: Plan actualizado correctamente.
           content:
             application/json:
-              schemas:
+              schema:
                 $ref: '#/components/schemas/Plan'
         '401':
           description: Credenciales no válidas o faltantes.
@@ -769,9 +769,9 @@ paths:
         "200":
           description: Producto actualizado correctamente
           content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Producto'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Producto'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -939,11 +939,12 @@ paths:
         "200":
           description: Relaciones obtenidas correctamente.
           content:
-            schema:
-              type: array
-              items:
-                schema:
-                  $ref: '#/components/schemas/Relacion'
+            application/json:
+              schema:
+                type: array
+                items:
+                  schema:
+                    $ref: '#/components/schemas/Relacion'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -1098,9 +1099,9 @@ paths:
         "201":
           description: Activo creado correctamente
           content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Activo'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activo'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -1118,13 +1119,19 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activo'
       responses:
         "200":
           description: Activo actualizado correctamente
           content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Activo'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activo'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -1171,10 +1178,11 @@ paths:
           description: Categorías obtenidas correctamente
           content:
             application/json:
-              type: array
-              items:
-                schema:
-                  $ref: '#/components/schemas/Categoria'
+              schema:
+                type: array
+                items:
+                  schema:
+                    $ref: '#/components/schemas/Categoria'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
@@ -1222,6 +1230,12 @@ paths:
           required: true
           schema:
             type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Categoria'
       responses:
         "200":
           description: Categoría actualizada correctamente
