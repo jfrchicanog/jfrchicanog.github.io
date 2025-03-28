@@ -1354,13 +1354,12 @@ components:
         atributos:
           type: array
           items:
-            schema:
-              type: object
-              properties:
-                nombre: 
-                  type: string
-                valor:
-                  type: string
+            type: object
+            properties:
+              nombre:
+                type: string
+              valor:
+                type: string
 
         categorias:
           type: array
