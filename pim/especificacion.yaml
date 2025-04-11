@@ -405,8 +405,9 @@ paths:
       summary: Actualiza el propietario de una cuenta.
       description: >
         Hay que indicar el ID y/o el e-mail del nuevo propietario.
-        Se debe comprobar que el usuario existe.
-        Si el propietario no es un usuario, se añade también como usuario.
+        Se debe comprobar que el usuario existe (llamando al microservicio de gestión de usuarios).
+        Si el propietario no es un usuario de la cuenta, se añade también como usuario de la cuenta 
+        (no hay que añadirlo como usuario en el microservicio de gestión de usuarios).
         Esta operación solo puede realizarla un administrador.
       parameters:
         - schema:
