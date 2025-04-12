@@ -4,7 +4,7 @@ info:
   description: 'API para la gestión de usuarios, cuentas y planes, productos y activos.'
   version: 1.0.0
 servers:
-  - url: 'https://api.example.com'
+  - url: 'https://mallba3.lcc.uma.es'
     description: Servidor principal
 tags:
   - name: Usuarios
