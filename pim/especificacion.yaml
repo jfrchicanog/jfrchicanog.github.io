@@ -944,8 +944,9 @@ paths:
               schema:
                 type: array
                 items:
-                  schema:
-                    $ref: '#/components/schemas/Relacion'
+                  $ref: '#/components/schemas/Relacion'
+
+
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
