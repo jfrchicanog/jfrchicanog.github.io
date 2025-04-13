@@ -1183,8 +1183,7 @@ paths:
               schema:
                 type: array
                 items:
-                  schema:
-                    $ref: '#/components/schemas/Categoria'
+                  $ref: '#/components/schemas/Categoria'
         '401':
           description: Credenciales no válidas o faltantes.
         '403':
