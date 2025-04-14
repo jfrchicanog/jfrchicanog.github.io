@@ -271,11 +271,11 @@ paths:
       summary: >
         Añade una cuenta nueva
       description: >
-        Este métoco solo lo pueden usar administradores.
+        Este método solo lo pueden usar administradores.
         El plan no tiene que estar completo, basta con que aparezca
         el ID del plan en el objeto.
-        Al crearse la cuenta se asocia el usuario que la crea como propietario y usuario.
-        Esta operación solo la puede hacer un administrador.
+        Al crearse la cuenta se asocia el usuario que la crea (un administrador) como propietario y usuario.
+        Más adelante este administrador podrá modificar la lista de usuarios y propietarios usando otros endpoints.
       requestBody:
         required: true
         content:
