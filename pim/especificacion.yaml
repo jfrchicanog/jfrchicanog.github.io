@@ -270,7 +270,7 @@ paths:
         - Cuentas
       summary: >
         Añade una cuenta nueva
-      descripcion: >
+      description: >
         Este métoco solo lo pueden usar administradores.
         El plan no tiene que estar completo, basta con que aparezca
         el ID del plan en el objeto.
