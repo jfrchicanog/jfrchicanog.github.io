@@ -6,6 +6,8 @@ info:
 servers:
   - url: 'https://mallba3.lcc.uma.es'
     description: Servidor principal
+  - url: 'http://localhost:8080'
+    description: Servidor local
 tags:
   - name: Usuarios
     description: Gestión de usuarios y autenticación
