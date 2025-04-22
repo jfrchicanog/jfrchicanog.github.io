@@ -227,7 +227,7 @@ paths:
         Puede obtenerlas todas (solo si es administrador quien hace la consulta),
         la que tiene el idCuenta indicado en el parámetro de consulta
         (solo si es administrador o es un usuario asociado a la cuenta),
-        las que pertenecen al usuario con identificador idUsuario,
+        a las que tiene acceso el usuario con identificador idUsuario,
         las que tienen el nombre indicando en el parámetro de consulta (solo para administradores),
         y las que tienen asociadas un plan concreto (solo administradores).
         Si no se indica ningún parámetro de consulta y no es un administrador, se devuelve solo las
@@ -244,7 +244,7 @@ paths:
           in: query
           description: Identificador del usuario.
         - schema:
-            type: integer
+            type: string
           name: nombre
           in: query
           description: Nombre de la cuenta.
