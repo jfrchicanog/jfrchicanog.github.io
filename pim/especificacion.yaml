@@ -140,7 +140,11 @@ paths:
     post:
       summary: Añadir usuario
       description: >
-        Solo un administrador puede usar este método.
+        Solo un administrador puede usar este método. 
+        La contraseña ascoiada al usuario se debene generar de aleatoriamente en el servicio usando 
+        letras mayúsculas y minúsculas, dígitos y algunos signos de puntuación, pero nunca espacios.
+        Esta contraseña no llegará a conocerla el usuario, pero siempre puede regenerarla usando los
+        endpoints `/forgottenpassword` y `/passwordreset`.
       tags:
         - Usuarios
       operationId: addUser
