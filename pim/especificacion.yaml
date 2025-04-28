@@ -385,7 +385,7 @@ paths:
         '200':
           description: Devuelve el ID, email y nombre completo del propietario de la cuenta.
           content:
-            applicaion/json:
+            application/json:
               schema:
                 type: object
                 properties:
@@ -438,7 +438,7 @@ paths:
         '200':
           description: El propietario de la cuenta queda acualizado. Devuelve el nuevo propietario.
           content:
-            applicaion/json:
+            application/json:
               schema:
                 type: object
                 properties:
@@ -480,7 +480,7 @@ paths:
         '200':
           description: Devuelve un array con el ID, email y nombre completo de los usuarios de la cuenta.
           content:
-            applicaion/json:
+            application/json:
               schema:
                 type: array
                 items:
@@ -535,7 +535,7 @@ paths:
         '200':
           description: Los usuarios de la cuenta se actualizan y se devuelven.
           content:
-            applicaion/json:
+            application/json:
               schema:
                 type: array
                 items:
