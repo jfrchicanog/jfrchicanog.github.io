@@ -1203,6 +1203,7 @@ paths:
         Solo puede crear un activo un usuario asociado a la cuenta que se indica como parámetro.
       parameters:
         - name: idCuenta
+          required: true
           in: query
           schema:
             type: integer
