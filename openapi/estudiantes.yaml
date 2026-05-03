@@ -28,16 +28,8 @@ paths:
                 $ref: '#/components/schemas/Instituto'
         "404":
           description: Instituto no encontrado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Instituto'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Instituto'
     put:
       tags:
       - controlador-institutos
@@ -65,16 +57,8 @@ paths:
                 $ref: '#/components/schemas/Instituto'
         "404":
           description: Instituto no encontrado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Instituto'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Instituto'
     delete:
       tags:
       - controlador-institutos
@@ -119,16 +103,8 @@ paths:
                 $ref: '#/components/schemas/Estudiante'
         "404":
           description: Estudiante no encontrado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
     put:
       tags:
       - controlador-estudiantes
@@ -157,22 +133,10 @@ paths:
                 $ref: '#/components/schemas/Estudiante'
         "404":
           description: "Estudiante, instituto o materias no encontradas"
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
         "409":
           description: Ya hay otro estudiante con el mismo DNI
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
     delete:
       tags:
       - controlador-estudiantes
@@ -214,13 +178,6 @@ paths:
                   $ref: '#/components/schemas/Instituto'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Instituto'
     post:
       tags:
       - controlador-institutos
@@ -247,10 +204,6 @@ paths:
                 $ref: '#/components/schemas/Instituto'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Instituto'
   /estudiantes:
     get:
       tags:
@@ -285,13 +238,6 @@ paths:
                   $ref: '#/components/schemas/Estudiante'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Estudiante'
     post:
       tags:
       - controlador-estudiantes
@@ -318,16 +264,8 @@ paths:
                 $ref: '#/components/schemas/Estudiante'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
         "409":
           description: Ya hay un estudiante con el mismo DNI
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Estudiante'
   /estudiantes/upload:
     post:
       tags:
@@ -356,10 +294,6 @@ paths:
                 $ref: '#/components/schemas/ImportacionEstudiantes'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/ImportacionEstudiantes'
 components:
   schemas:
     Instituto:
