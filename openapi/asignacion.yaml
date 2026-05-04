@@ -47,13 +47,6 @@ paths:
                   $ref: '#/components/schemas/AsignacionEstudiantes'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/AsignacionEstudiantes'
     put:
       tags:
       - controlador-asignacion
@@ -138,13 +131,6 @@ paths:
                   $ref: '#/components/schemas/AsignacionAulasAnexo2'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/AsignacionAulasAnexo2'
     put:
       tags:
       - controlador-asignacion
@@ -235,13 +221,6 @@ paths:
                   $ref: '#/components/schemas/AsignacionAulasAnexo1'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/AsignacionAulasAnexo1'
 components:
   schemas:
     Asignacion:
