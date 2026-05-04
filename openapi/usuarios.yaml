@@ -141,6 +141,7 @@ paths:
             schema:
               $ref: '#/components/schemas/LoginDTO'
         required: true
+      security: []  
       responses:
         "403":
           description: Las credenciales son incorrectas
