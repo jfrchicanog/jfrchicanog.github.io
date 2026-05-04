@@ -132,7 +132,7 @@ paths:
   /login:
     post:
       tags:
-      - Gestión de usuarios
+      - Usuarios
       description: Comprueba las credenciales de un usuario y devuelve un JWT.
       operationId: login
       requestBody:
