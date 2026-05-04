@@ -1,1 +1,265 @@
-{"openapi":"3.0.1","info":{"title":"OpenAPI definition","version":"v0"},"servers":[{"url":"http://localhost:8080","description":"Generated server url"}],"paths":{"/usuarios/{id}":{"get":{"tags":["controlador-usuarios"],"description":"Obtiene un usuario concreto","operationId":"getUsuario","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"El usuario existe","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Usuario"}}}},"404":{"description":"El usuario no existe","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Usuario"}}}},"403":{"description":"Acceso no autorizado","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Usuario"}}}}}},"put":{"tags":["controlador-usuarios"],"description":"Actualiza un usuario","operationId":"actualizarUsuario","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UsuarioNuevo"}}},"required":true},"responses":{"200":{"description":"El usuario se ha actualizado","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Usuario"}}}},"404":{"description":"El usuario no existe","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Usuario"}}}},"403":{"description":"Acceso no autorizado","content":{"*/*":{"schema":{"$ref":"#/components/schemas/Usuario"}}}}}},"delete":{"tags":["controlador-usuarios"],"description":"Elimina el usuario.","operationId":"eliminarUsuario","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"El usuario se ha elminado"},"404":{"description":"El usuario no existe"},"403":{"description":"Acceso no autorizado"}}}},"/usuarios":{"get":{"tags":["controlador-usuarios"],"description":"Obtiene la lista de usuarios del sistema","operationId":"obtenerUsuarios_1","responses":{"200":{"description":"Devuelve la lista de usuarios","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Usuario"}}}}},"403":{"description":"Acceso no autorizado","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/Usuario"}}}}}}},"post":{"tags":["controlador-usuarios"],"description":"Crea un nuevo usuario en el sistema","operationId":"obtenerUsuarios","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UsuarioNuevo"}}},"required":true},"responses":{"201":{"description":"El usuario se crea correctamente","headers":{"Location":{"description":"URI del nuevo recurso","style":"simple","schema":{"type":"string"}}}},"409":{"description":"Hay un usuario con el mismo correo electrónico en el sistema"},"403":{"description":"Acceso no autorizado"}}}},"/passwordreset":{"post":{"tags":["controlador-usuarios"],"description":"Pide al servicio que se genere una nueva contraseña para un usuario. El servicio debe enviar un e-mail a través del servicio de notificaciones con la nueva contraseña para el uusario. Si el usuario no existe, la respuesta debe ser la misma que cuando existe, para no dar información acerca de la existencia del usuario en el sistema.","operationId":"passwordReset","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/PasswordReset"}}},"required":true},"responses":{"200":{"description":"Si el usuario existe cambia contraseña y envía notificación. En caso contrario no hace nada."}},"security":[{"public":[]}]}},"/login":{"post":{"tags":["controlador-usuarios"],"description":"Comprueba las credenciales del usuario y devuelve un JWT si todo fue correcto.","operationId":"passwordReset_1","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/Login"}}},"required":true},"responses":{"200":{"description":"Devuelve un JWT para el usuario si las credenciales son correctas.","content":{"*/*":{"schema":{"$ref":"#/components/schemas/RespuestaJWT"}}}},"403":{"description":"Creedenciales no correctas.","content":{"*/*":{"schema":{"$ref":"#/components/schemas/RespuestaJWT"}}}}},"security":[{"public":[]}]}}},"components":{"schemas":{"UsuarioNuevo":{"type":"object","properties":{"nombre":{"type":"string"},"apellido1":{"type":"string"},"apellido2":{"type":"string"},"email":{"type":"string"}}},"Usuario":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"nombre":{"type":"string"},"apellido1":{"type":"string"},"apellido2":{"type":"string"},"email":{"type":"string"}}},"PasswordReset":{"type":"object","properties":{"email":{"type":"string"}}},"Login":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"}}},"RespuestaJWT":{"type":"object","properties":{"jwt":{"type":"string"}}}},"securitySchemes":{"api_key":{"type":"apiKey","name":"api_key","in":"header"}}}}
+openapi: 3.0.1
+info:
+  title: Microservicio de gestión de usuarios
+  description: Este microservicio permite gestionar los usuarios de la aplicación de PAU
+  version: 1.0.0
+servers:
+  - url: 'https://mallba3.lcc.uma.es'
+    description: Servidor principal
+  - url: 'http://localhost:8080'
+    description: Servidor local
+
+tags:
+  - name: Usuarios
+    description: Gestión de usuarios y autenticación
+
+paths:
+  /usuarios/{id}:
+    get:
+      tags:
+      - Usuarios
+      description: Devuelve un usuario concreto.
+      operationId: obtenerUsuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "403":
+          description: Sin permisos suficientes
+          content: {}
+        "200":
+          description: Se obtiene el usuario correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+        "404":
+          description: El usuario no existe
+    put:
+      tags:
+      - Usuarios
+      description: Actualiza un usuario
+      operationId: actualizarUsuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioNuevoDTO'
+        required: true
+      responses:
+        "200":
+          description: El usuario se ha actualizado
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/UsuarioDTO'
+        "404":
+          description: El usuario no existe
+        "403":
+          description: Acceso no autorizado
+    delete:
+      tags:
+      - Usuarios
+      description: Elimina el usuario.
+      operationId: eliminarUsuario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: El usuario se ha eliminado
+        "404":
+          description: El usuario no existe
+        "403":
+          description: Acceso no autorizado
+  /usuarios:
+    get:
+      tags:
+      - Usuarios
+      description: Obtiene la lista de usuarios del sistema
+      operationId: obtenerUsuarios_1
+      responses:
+        "200":
+          description: Devuelve la lista de usuarios
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UsuarioDTO'
+        "403":
+          description: Acceso no autorizado
+    post:
+      tags:
+      - Usuarios
+      description: Crea un nuevo usuario en el sistema
+      operationId: obtenerUsuarios
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsuarioNuevoDTO'
+        required: true
+      responses:
+        "201":
+          description: El usuario se crea correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+        "409":
+          description: Hay un usuario con el mismo correo electrónico en el sistema
+        "403":
+          description: Acceso no autorizado
+
+  /login:
+    post:
+      tags:
+      - Gestión de usuarios
+      description: Comprueba las credenciales de un usuario y devuelve un JWT.
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDTO'
+        required: true
+      responses:
+        "403":
+          description: Las credenciales son incorrectas
+          content: {}
+        "200":
+          description: Las credenciales son correctas y devuelve el JWT
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JWTDto'
+
+  /forgottenpassword:
+    post:
+      tags:
+        - Usuarios
+      summary: Solicitar restablecimiento de contraseña.
+      description: >
+        Este endpoint se llama para solicitar un correo de restablecimiento de contraseña.
+        En dicho correo debería ir un enlace que dirija al usuario al frontend de la aplicación con un
+        token de seguridad. El frontend pedirá la nueva contraseña y mandará tanto el token como
+        la contraseña al endpoint `/passwordreset`.
+      operationId: forgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+      security: []
+      responses:
+        '200':
+          description: Token de restablecimiento enviado al correo electrónico
+  /passwordreset:
+    post:
+      tags:
+        - Usuarios
+      summary: Restablecer contraseña
+      description: >
+        Aquí se recibe la nueva contraseña y el token de seguridad para el restablecimiento de la contraseña de un usuario.
+      operationId: resetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                newPassword:
+                  type: string
+      security: []
+      responses:
+        '200':
+          description: Contraseña actualizada correctamente
+        '403':
+          description: El token usado no es válido
+
+components:
+  schemas:
+    LoginDTO:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    JWTDto:
+      type: object
+      properties:
+        jwt:
+          type: string
+    UsuarioDTO:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellido1:
+          type: string
+        apellido2:
+          type: string
+        email:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - VICERRECTORADO
+            - ADMINISTRADOR
+        id:
+          type: integer
+          format: int64
+    UsuarioNuevoDTO:
+      type: object
+      properties:
+        nombre:
+          type: string
+        apellido1:
+          type: string
+        apellido2:
+          type: string
+        email:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - VICERRECTORADO
+            - ADMINISTRADOR
+  securitySchemes:
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
