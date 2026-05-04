@@ -51,24 +51,10 @@
             }
           },
           "404": {
-            "description": "Vigilante no encontrado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Vigilante no encontrado"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -111,24 +97,10 @@
             }
           },
           "404": {
-            "description": "Vigilante no encontrado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Vigilante no encontrado"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -325,24 +297,10 @@
             }
           },
           "404": {
-            "description": "Responsable no encontrado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Responsable no encontrado"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -385,24 +343,10 @@
             }
           },
           "404": {
-            "description": "Responsable no encontrado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Responsable no encontrado"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
@@ -437,24 +381,10 @@
             }
           },
           "404": {
-            "description": "Aula no encontrada",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Aula"
-                }
-              }
-            }
+            "description": "Aula no encontrada"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Aula"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -497,24 +427,10 @@
             }
           },
           "404": {
-            "description": "Aula no encontrada",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Aula"
-                }
-              }
-            }
+            "description": "Aula no encontrada"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Aula"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -602,18 +518,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AsignacionPersonalAulas"
-                  }
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -711,18 +616,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Personal"
-                  }
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -775,34 +669,13 @@
             }
           },
           "404": {
-            "description": "La sede indicada no se encuentra",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "La sede indicada no se encuentra"
           },
           "409": {
-            "description": "El vigilante ya está registrado en esta convocatoria",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "El vigilante ya está registrado en esta convocatoria"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
@@ -842,18 +715,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Sede"
-                  }
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -894,24 +756,10 @@
             }
           },
           "404": {
-            "description": "Algunos de los datos de aulas o personal no se encuentran",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sede"
-                }
-              }
-            }
+            "description": "Algunos de los datos de aulas o personal no se encuentran"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sede"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
@@ -961,18 +809,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Personal"
-                  }
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -1025,34 +862,13 @@
             }
           },
           "404": {
-            "description": "La sede indicada no se encuentra",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "La sede indicada no se encuentra"
           },
           "409": {
-            "description": "El responsable ya está registrado en esta convocatoria",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "El responsable ya está registrado en esta convocatoria"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Personal"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
@@ -1130,18 +946,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Aula"
-                  }
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -1182,24 +987,10 @@
             }
           },
           "404": {
-            "description": "La sede indicada no se encuentran",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Aula"
-                }
-              }
-            }
+            "description": "La sede indicada no se encuentran"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Aula"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
