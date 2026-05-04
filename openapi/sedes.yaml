@@ -202,24 +202,10 @@
             }
           },
           "404": {
-            "description": "Sede no encontrada",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sede"
-                }
-              }
-            }
+            "description": "Sede no encontrada"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sede"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -262,24 +248,10 @@
             }
           },
           "404": {
-            "description": "Sede, vigilante, responsable o aula no encontrada",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sede"
-                }
-              }
-            }
+            "description": "Sede, vigilante, responsable o aula no encontrada"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Sede"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
