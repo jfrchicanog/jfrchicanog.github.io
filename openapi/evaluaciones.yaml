@@ -41,24 +41,10 @@
             }
           },
           "404": {
-            "description": "El examen no existe",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Examen"
-                }
-              }
-            }
+            "description": "El examen no existe"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Examen"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -101,24 +87,10 @@
             }
           },
           "404": {
-            "description": "El examen no existe",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Examen"
-                }
-              }
-            }
+            "description": "El examen no existe"
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Examen"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
@@ -146,18 +118,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "uniqueItems": true,
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Asignacion"
-                  }
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       },
@@ -248,14 +209,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/Examen"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
@@ -302,17 +256,7 @@
             }
           },
           "404": {
-            "description": "No existe el/la estudiante o no coinciden los datos",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Examen"
-                  }
-                }
-              }
-            }
+            "description": "No existe el/la estudiante o no coinciden los datos"
           }
         },
         "security": [
@@ -341,14 +285,7 @@
             }
           },
           "403": {
-            "description": "Acceso no autorizado",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "$ref": "#/components/schemas/EstadoCorrecciones"
-                }
-              }
-            }
+            "description": "Acceso no autorizado"
           }
         }
       }
