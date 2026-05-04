@@ -33,7 +33,7 @@
       "description": "Gestión de aulas"
     },
     {
-      "name": "Asigancion",
+      "name": "Asignacion",
       "description": "Gestión de asignación de vigilantes a aulas"
     }
     
@@ -962,7 +962,7 @@
     "/aulas": {
       "get": {
         "tags": [
-          "controlador-aulas"
+          "Aulas"
         ],
         "description": "Devuelve la lista de aulas",
         "operationId": "consultarAulas",
@@ -1010,7 +1010,7 @@
       },
       "post": {
         "tags": [
-          "controlador-aulas"
+          "Aulas"
         ],
         "description": "Crea una nueva aula en una sede.",
         "operationId": "crearAula",
