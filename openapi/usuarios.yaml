@@ -30,7 +30,6 @@ paths:
       responses:
         "403":
           description: Sin permisos suficientes
-          content: {}
         "200":
           description: Se obtiene el usuario correctamente
           content:

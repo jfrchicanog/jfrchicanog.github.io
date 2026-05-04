@@ -1,17 +1,31 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Microservicio de gestión de convocatorias, materias, slots y pruebas
+  version: 1.0.0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
+  - url: 'https://mallba3.lcc.uma.es'
+    description: Servidor principal
+  - url: 'http://localhost:8080'
+    description: Servidor local
+
+tags:
+  - name: Slots
+    description: Gestión de slots
+  - name: Materias
+    description: Gestión de materias
+  - name: Pruebas
+    description: Gestión de pruebas    
+  - name: Convocatorias
+    description: Gestión de convocatorias
+
+
 paths:
   /slots/{idSlot}:
     get:
       tags:
-      - controlador-slots
+      - Slots
       description: Devuelve información de un slot concreto
-      operationId: consultarMateria
+      operationId: consultarSlot
       parameters:
       - name: idSlot
         in: path
@@ -28,21 +42,13 @@ paths:
                 $ref: '#/components/schemas/Slot'
         "404":
           description: Slot no encontrado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Slot'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Slot'
     put:
       tags:
-      - controlador-slots
+      - Slots
       description: Actualiza un slot concreto
-      operationId: actualizarMateria
+      operationId: actualizarSlot
       parameters:
       - name: idSlot
         in: path
@@ -54,7 +60,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Slot'
+              $ref: '#/components/schemas/SlotNuevo'
         required: true
       responses:
         "200":
@@ -65,22 +71,14 @@ paths:
                 $ref: '#/components/schemas/Slot'
         "404":
           description: Slot no encontrado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Slot'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Slot'
     delete:
       tags:
-      - controlador-slots
+      - Slots
       description: Elimina un slot concreto. Solo se puede hacer una eliminación lógica
         (marcando el slot como eliminado) y solo de la convocaotira actual.
-      operationId: eliminarPrueba
+      operationId: eliminarSlot
       parameters:
       - name: idSlot
         in: path
@@ -92,13 +90,72 @@ paths:
         "200":
           description: Eliminación correcta
         "404":
-          description: Prueba no encontrada
+          description: Slot no encontrado
         "403":
           description: Acceso no autorizado
+
+  /slots:
+    get:
+      tags:
+      - Slots
+      description: Devuelve la lista de slots planificados en una convocatoria.
+      operationId: consultarSlots
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se indica se asume que se pregunta por la convocatoria
+          actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Slot'
+        "404":
+          description: Convocatoria no encontrada
+        "403":
+          description: Acceso no autorizado
+    post:
+      tags:
+      - Slots
+      description: Crea un nuevo slot en la convocatoria actual. Devuelve el slot
+        creado.
+      operationId: crearSlot
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlotNuevo'
+        required: true
+      responses:
+        "201":
+          description: El slot se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Slot'
+        "403":
+          description: Acceso no autorizado
+
+
   /pruebas/{idPrueba}:
     get:
       tags:
-      - controlador-pruebas
+      - Pruebas
       description: Devuelve información de una prueba concreta
       operationId: consultarPrueba
       parameters:
@@ -114,22 +171,15 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Materia'
+                $ref: '#/components/schemas/Prueba'
         "404":
           description: Prueba no encontrada
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
+
     put:
       tags:
-      - controlador-pruebas
+      - Pruebas
       description: Actualiza una prueba concreta
       operationId: actualizarPrueba
       parameters:
@@ -143,7 +193,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Prueba'
+              $ref: '#/components/schemas/PruebaNueva'
         required: true
       responses:
         "200":
@@ -154,22 +204,14 @@ paths:
                 $ref: '#/components/schemas/Prueba'
         "404":
           description: Prueba no encontrada
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Prueba'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Prueba'
     delete:
       tags:
-      - controlador-pruebas
+      - Pruebas
       description: Elimina una prueba concreta. Solo se puede hacer una eliminación
         lógica (marcando la prueba como eliminada).
-      operationId: eliminarPrueba_1
+      operationId: eliminarPrueba
       parameters:
       - name: idPrueba
         in: path
@@ -184,6 +226,74 @@ paths:
           description: Prueba no encontrada
         "403":
           description: Acceso no autorizado
+
+  /pruebas:
+    get:
+      tags:
+      - Pruebas
+      description: Devuelve la lista de pruebas planificadas en un slot y convocatoria.
+      operationId: consultarPruebas
+      parameters:
+      - name: idConvocatoria
+        in: query
+        description: Si no se indica se asume que se pregunta por la convocatoria
+          actual
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: idSlot
+        in: query
+        description: El slot por el que se consulta (si no se indica se devuelven
+          todos)
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Devolución correcta
+          content:
+            '*/*':
+              schema:
+                uniqueItems: true
+                type: array
+                items:
+                  $ref: '#/components/schemas/Prueba'
+        "404":
+          description: Slot o convocatoria no encontrados
+        "403":
+          description: Acceso no autorizado
+
+    post:
+      tags:
+      - Pruebas
+      description: Crea una nueva prueba. Devuelve la prueba creada.
+      operationId: crearPrueba
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PruebaNueva'
+        required: true
+      responses:
+        "201":
+          description: La prueba se ha creado correctamente
+          headers:
+            Location:
+              description: URI del nuevo recurso
+              style: simple
+              schema:
+                type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Prueba'
+        "404":
+          description: La materia o el slot no se encuentran
+        "403":
+          description: Acceso no autorizado
+
   /materias/{idMateria}:
     get:
       tags:
@@ -273,167 +383,8 @@ paths:
           description: Materia no encontrada
         "403":
           description: Acceso no autorizado
-  /slots:
-    get:
-      tags:
-      - controlador-slots
-      description: Devuelve la lista de slots planificados en una convocatoria.
-      operationId: consultarSlots
-      parameters:
-      - name: idConvocatoria
-        in: query
-        description: Si no se indica se asume que se pregunta por la convocatoria
-          actual
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Devolución correcta
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Slot'
-        "404":
-          description: Convocatoria no encontrada
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Slot'
-        "403":
-          description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Slot'
-    post:
-      tags:
-      - controlador-slots
-      description: Crea un nuevo slot en la convocatoria actual. Devuelve el slot
-        creado.
-      operationId: crearSlot
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Slot'
-        required: true
-      responses:
-        "201":
-          description: El slot se ha creado correctamente
-          headers:
-            Location:
-              description: URI del nuevo recurso
-              style: simple
-              schema:
-                type: string
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Slot'
-        "403":
-          description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Slot'
-  /pruebas:
-    get:
-      tags:
-      - controlador-pruebas
-      description: Devuelve la lista de pruebas planificadas en un slot y convocatoria.
-      operationId: consultarPruebas
-      parameters:
-      - name: idConvocatoria
-        in: query
-        description: Si no se indica se asume que se pregunta por la convocatoria
-          actual
-        required: false
-        schema:
-          type: integer
-          format: int64
-      - name: idSlot
-        in: query
-        description: El slot por el que se consulta (si no se indica se devuelven
-          todos)
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: Devolución correcta
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Prueba'
-        "404":
-          description: Slot o convocatoria no encontrados
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Prueba'
-        "403":
-          description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Prueba'
-    post:
-      tags:
-      - controlador-pruebas
-      description: Crea una nueva prueba. Devuelve la prueba creada.
-      operationId: crearPrueba
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Prueba'
-        required: true
-      responses:
-        "201":
-          description: La prueba se ha creado correctamente
-          headers:
-            Location:
-              description: URI del nuevo recurso
-              style: simple
-              schema:
-                type: string
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Prueba'
-        "404":
-          description: La materia o el slot no se encuentran
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Prueba'
-        "403":
-          description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Prueba'
+  
+  
   /materias:
     get:
       tags:
@@ -601,6 +552,19 @@ components:
           type: boolean
         convocatoria:
           $ref: '#/components/schemas/Convocatoria'
+    SlotNuevo:
+      type: object
+      properties:
+        inicio:
+          type: string
+          format: date-time
+        fin:
+          type: string
+          format: date-time
+        eliminado:
+          type: boolean
+        convocatoria:
+          $ref: '#/components/schemas/Convocatoria'      
     Materia:
       type: object
       properties:
@@ -623,7 +587,22 @@ components:
           $ref: '#/components/schemas/Materia'
         eliminada:
           type: boolean
-      description: Es suficiente indicar el ID del slot y la materia.
+    PruebaNueva:
+      type: object
+      properties:
+        slot:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+        materia:
+          type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+      description: Es suficiente indicar el ID del slot y la materia.  
   securitySchemes:
     api_key:
       type: apiKey
