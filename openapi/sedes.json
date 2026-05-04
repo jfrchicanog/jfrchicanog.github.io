@@ -1,20 +1,48 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+    "title": "Microservicio de gestión de sedes",
+    "description": "Este microservicio permite gestionar las sedes, responsables, vigilantes y aulas",
+    "version": "1.0.0"
   },
   "servers": [
     {
+      "url": "https://mallba3.lcc.uma.es",
+      "description": "Servidor principal"
+    },
+    {
       "url": "http://localhost:8080",
-      "description": "Generated server url"
+      "description": "Servidor local"
     }
+  ],
+  "tags": [
+    {
+      "name": "Vigilantes",
+      "description": "Gestión de vigilantes"
+    },
+    {
+      "name": "Sedes",
+      "description": "Gestión de sedes"
+    },
+    {
+      "name": "Responsables",
+      "description": "Gestión de responsables de sedes"
+    },
+    {
+      "name": "Aulas",
+      "description": "Gestión de aulas"
+    },
+    {
+      "name": "Asigancion",
+      "description": "Gestión de asignación de vigilantes a aulas"
+    }
+    
   ],
   "paths": {
     "/vigilantes/{idVigilante}": {
       "get": {
         "tags": [
-          "controlador-vigilantes"
+          "Vigilantes"
         ],
         "description": "Devuelve información de un vigilante concreto",
         "operationId": "consultarVigilante",
@@ -45,7 +73,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Personal"
+                  "$ref": "#/components/schemas/Vigilante"
                 }
               }
             }
@@ -60,10 +88,10 @@
       },
       "put": {
         "tags": [
-          "controlador-vigilantes"
+          "Vigilantes"
         ],
         "description": "Actualiza un vigilante concreto. ",
-        "operationId": "actualizarSede",
+        "operationId": "actualizarVigilante",
         "parameters": [
           {
             "name": "idVigilante",
@@ -79,7 +107,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Personal"
+                "$ref": "#/components/schemas/Vigilante"
               }
             }
           },
@@ -91,7 +119,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Personal"
+                  "$ref": "#/components/schemas/Vigilante"
                 }
               }
             }
@@ -106,7 +134,7 @@
       },
       "delete": {
         "tags": [
-          "controlador-vigilantes"
+          "Vigilantes"
         ],
         "description": "Elimina un vigilante concreto. Solo se puede eliminar si no se ha asociado ningún aula en ninguna convocatoria",
         "operationId": "eliminarVigilante",
@@ -137,7 +165,7 @@
     "/sedes/{idSede}": {
       "get": {
         "tags": [
-          "controlador-sedes"
+          "Sedes"
         ],
         "description": "Devuelve información de una sede concreta",
         "operationId": "consultarSedeConcreta",
@@ -183,10 +211,10 @@
       },
       "put": {
         "tags": [
-          "controlador-sedes"
+          "Sedes"
         ],
         "description": "Actualiza una sede concreta",
-        "operationId": "actualizarSede_1",
+        "operationId": "actualizarSede",
         "parameters": [
           {
             "name": "idSede",
@@ -202,7 +230,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Sede"
+                "$ref": "#/components/schemas/SedeNueva"
               }
             }
           },
@@ -229,7 +257,7 @@
       },
       "delete": {
         "tags": [
-          "controlador-sedes"
+          "Sedes"
         ],
         "description": "Elimina una sede concreta. Solo se puede eliminar si no se ha asociado ningún responsable, vigilante o aula en ninguna convocatoria",
         "operationId": "eliminarSede",
@@ -260,7 +288,7 @@
     "/responsables/{idResponsable}": {
       "get": {
         "tags": [
-          "controlador-responsables"
+          "Responsables"
         ],
         "description": "Devuelve información de un responsable concreto",
         "operationId": "consultarResponsable",
@@ -306,10 +334,10 @@
       },
       "put": {
         "tags": [
-          "controlador-responsables"
+          "Responsables"
         ],
         "description": "Actualiza un responsable concreto. ",
-        "operationId": "actualizarSede_2",
+        "operationId": "actualizarSede",
         "parameters": [
           {
             "name": "idResponsable",
@@ -349,12 +377,42 @@
             "description": "Acceso no autorizado"
           }
         }
+      },
+      "delete": {
+        "tags": [
+          "Responsables"
+        ],
+        "description": "Elimina un responsable concreto. Solo se puede eliminar si no se ha asociado ningún aula en ninguna convocatoria",
+        "operationId": "eliminarResponsable",
+        "parameters": [
+          {
+            "name": "idResponsable",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Eliminación correcta"
+          },
+          "404": {
+            "description": "La eliminación no es posible"
+          },
+          "403": {
+            "description": "Acceso no autorizado"
+          }
+        }
       }
+
     },
     "/aulas/{idAula}": {
       "get": {
         "tags": [
-          "controlador-aulas"
+          "Aulas"
         ],
         "description": "Devuelve información de un aula concreta",
         "operationId": "consultarAula",
@@ -390,10 +448,10 @@
       },
       "put": {
         "tags": [
-          "controlador-aulas"
+          "Aulas"
         ],
         "description": "Actualiza un aula concreta. No se puede actualizar la sede",
-        "operationId": "actualizarSede_3",
+        "operationId": "actualizarSede",
         "parameters": [
           {
             "name": "idAula",
@@ -436,7 +494,7 @@
       },
       "delete": {
         "tags": [
-          "controlador-aulas"
+          "Aulas"
         ],
         "description": "Elimina un aula concreta. Solo se puede eliminar si no se ha asociado ningún vigilante/responsable en ninguna convocatoria",
         "operationId": "eliminarAula",
@@ -467,9 +525,9 @@
     "/asignacion/{idSede}": {
       "get": {
         "tags": [
-          "controlador-asignacion"
+          "Asignacion"
         ],
-        "description": "Devuelve la asignación de vigilantes \u00a0a aulas. Se puede hacer una consulta devolviendo solo los asignados o los no asignados. Solo se proporcionan datos de la convocatoria actual.",
+        "description": "Devuelve la asignación de vigilantes \u00a0a aulas. Se puede hacer una consulta devolviendo solo los asignados o los no asignados.",
         "operationId": "consultarAsginacion",
         "parameters": [
           {
@@ -494,7 +552,7 @@
           {
             "name": "idConvocatoria",
             "in": "query",
-            "description": "ID de la convocatoria",
+            "description": "ID de la convocatoria. SI no se indica, se asume que es la actual.",
             "required": false,
             "schema": {
               "type": "integer",
@@ -524,9 +582,9 @@
       },
       "put": {
         "tags": [
-          "controlador-asignacion"
+          "Asignacion"
         ],
-        "description": "Actualiza la asignacion de la sede.",
+        "description": "Actualiza la asignacion de la sede. Solo se puede actualizar la asignación de la convocatoria actual.",
         "operationId": "actualizarAsginacion",
         "parameters": [
           {
@@ -574,7 +632,7 @@
     "/vigilantes": {
       "get": {
         "tags": [
-          "controlador-vigilantes"
+          "Vigilantes"
         ],
         "description": "Devuelve la lista de vigilantes",
         "operationId": "consultarVigilantes",
@@ -609,7 +667,7 @@
                   "uniqueItems": true,
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Personal"
+                    "$ref": "#/components/schemas/Vigilante"
                   }
                 }
               }
@@ -622,9 +680,9 @@
       },
       "post": {
         "tags": [
-          "controlador-vigilantes"
+          "Vigilantes"
         ],
-        "description": "Crea un nuevo vigilante en una sede. Si el vigilante ya existía en otras convocatorias pero no es esta se añade a esta convocaotira y se registra su disponibilidad para esta.",
+        "description": "Crea un nuevo vigilante en una sede. Si el vigilante ya existía en otras convocatorias pero no es esta se añade a esta convocatoria y se registra su disponibilidad para esta.",
         "operationId": "crearVigilante",
         "parameters": [
           {
@@ -642,7 +700,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Personal"
+                "$ref": "#/components/schemas/Vigilante"
               }
             }
           },
@@ -663,7 +721,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/Personal"
+                  "$ref": "#/components/schemas/Vigilante"
                 }
               }
             }
@@ -683,7 +741,7 @@
     "/sedes": {
       "get": {
         "tags": [
-          "controlador-sedes"
+          "Sedes"
         ],
         "description": "Devuelve la lista de sedes",
         "operationId": "consultarSedes",
@@ -721,7 +779,7 @@
       },
       "post": {
         "tags": [
-          "controlador-sedes"
+          "Sedes"
         ],
         "description": "Crea una nueva sede.",
         "operationId": "crearSede",
@@ -767,7 +825,7 @@
     "/responsables": {
       "get": {
         "tags": [
-          "controlador-responsables"
+          "Responsables"
         ],
         "description": "Devuelve la lista de responsables",
         "operationId": "consultarResponsables",
@@ -815,7 +873,7 @@
       },
       "post": {
         "tags": [
-          "controlador-responsables"
+          "Responsables"
         ],
         "description": "Crea un nuevo responsable en una sede. Si el responsable ya existía en otras convocatorias pero no es esta se añade a esta convocatoria.",
         "operationId": "crearResponsable",
@@ -876,7 +934,7 @@
     "/notificaciones": {
       "post": {
         "tags": [
-          "controlador-asignacion"
+          "Asignacion"
         ],
         "description": "Programa el envío de notificaciones de asignación de aulas a los vigilanes. Contacta con el servicio de notificaciones.",
         "operationId": "programaNotificacionVigilantes",
@@ -994,28 +1052,8 @@
           }
         }
       }
-    },
-    "/responsables/{idresponsable}": {
-      "delete": {
-        "tags": [
-          "controlador-responsables"
-        ],
-        "description": "Elimina un responsable concreto. Solo se puede eliminar si no se ha asociado ningún aula en ninguna convocatoria",
-        "operationId": "eliminarResponsable",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Eliminación correcta"
-          },
-          "404": {
-            "description": "La eliminación no es posible"
-          },
-          "403": {
-            "description": "Acceso no autorizado"
-          }
-        }
-      }
     }
+    
   },
   "components": {
     "schemas": {
@@ -1036,6 +1074,32 @@
       "Personal": {
         "type": "object",
         "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "dni": {
+            "type": "string"
+          },
+          "nombreCompleto": {
+            "$ref": "#/components/schemas/NombreCompleto"
+          },
+          "telefono": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "description": "El idUsuario debe coincidir con el ID del personal"
+      },
+      "Vigilante": {
+        "type": "object",
+        "properties": {
+          "idUsuario": {
+            "type": "integer",
+            "format": "int64"
+          },
           "dni": {
             "type": "string"
           },
@@ -1056,7 +1120,8 @@
               "format": "int64"
             }
           }
-        }
+        },
+        "description": "El idUsuario debe coincidir con el ID del personal"
       },
       "Aula": {
         "type": "object",
@@ -1102,7 +1167,7 @@
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Personal"
+              "$ref": "#/components/schemas/Vigilante"
             }
           }
         }
@@ -1183,12 +1248,17 @@
       }
     },
     "securitySchemes": {
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ]
 }
 
