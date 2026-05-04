@@ -297,9 +297,9 @@ paths:
   /materias/{idMateria}:
     get:
       tags:
-      - controlador-materias
+      - Materias
       description: Devuelve información de una materia concreta
-      operationId: consultarMateria_1
+      operationId: consultarMateria
       parameters:
       - name: idMateria
         in: path
@@ -316,21 +316,13 @@ paths:
                 $ref: '#/components/schemas/Materia'
         "404":
           description: Materia no encontrada
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
     put:
       tags:
-      - controlador-materias
+      - Materias
       description: Actualiza una materia concreta
-      operationId: actualizarMateria_1
+      operationId: actualizarMateria
       parameters:
       - name: idMateria
         in: path
@@ -342,7 +334,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Materia'
+              $ref: '#/components/schemas/MateriaNueva'
         required: true
       responses:
         "200":
@@ -353,19 +345,11 @@ paths:
                 $ref: '#/components/schemas/Materia'
         "404":
           description: Materia no encontrada
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
     delete:
       tags:
-      - controlador-materias
+      - Materias
       description: Elimina una materia concreta. Solo se puede hacer una eliminación
         lógica (marcando la materia como eliminada).
       operationId: eliminarMateria
@@ -388,7 +372,7 @@ paths:
   /materias:
     get:
       tags:
-      - controlador-materias
+      - Materias
       description: Devuelve la lista de materias
       operationId: consultarMaterias
       responses:
@@ -403,23 +387,16 @@ paths:
                   $ref: '#/components/schemas/Materia'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Materia'
     post:
       tags:
-      - controlador-materias
+      - Materias
       description: Crea una nueva materia. Devuelve la materia creada.
       operationId: crearMateria
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Materia'
+              $ref: '#/components/schemas/MateriaNueva'
         required: true
       responses:
         "201":
@@ -436,14 +413,11 @@ paths:
                 $ref: '#/components/schemas/Materia'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
+
   /convocatorias:
     get:
       tags:
-      - controlador-convocatorias
+      - Convocatorias
       description: Devuelve la lista de convocatorias
       operationId: consultarConvocatorias
       responses:
@@ -458,23 +432,16 @@ paths:
                   $ref: '#/components/schemas/Convocatoria'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                uniqueItems: true
-                type: array
-                items:
-                  $ref: '#/components/schemas/Convocatoria'
     post:
       tags:
-      - controlador-convocatorias
+      - Convocatorias
       description: Crea una nueva convocatoria y se convierte en actual.
       operationId: crearConvocatoria
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Materia'
+              $ref: '#/components/schemas/ConvocatoriaNueva'
         required: true
       responses:
         "201":
@@ -491,14 +458,10 @@ paths:
                 $ref: '#/components/schemas/Materia'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Materia'
   /convocatorias/actual:
     get:
       tags:
-      - controlador-convocatorias
+      - Convocatorias
       description: Devuelve información de la convocatoria actual
       operationId: consultarConvocatoriaActual
       responses:
@@ -510,16 +473,9 @@ paths:
                 $ref: '#/components/schemas/Convocatoria'
         "404":
           description: Convocatoria no encontrada
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Convocatoria'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Convocatoria'
+          
 components:
   schemas:
     Convocatoria:
@@ -536,6 +492,17 @@ components:
         fechaFin:
           type: string
           format: date-time
+    ConvocatoriaNueva:
+      type: object
+      properties:
+        nombre:
+          type: string
+        fechaInicio:
+          type: string
+          format: date-time
+        fechaFin:
+          type: string
+          format: date-time      
     Slot:
       type: object
       properties:
@@ -575,6 +542,11 @@ components:
           type: string
         eliminada:
           type: boolean
+    MateriaNueva:
+      type: object
+      properties:
+        nombre:
+          type: string
     Prueba:
       type: object
       properties:
@@ -604,7 +576,11 @@ components:
               format: int64
       description: Es suficiente indicar el ID del slot y la materia.  
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - jwt: []
+  
