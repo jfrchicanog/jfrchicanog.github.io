@@ -1,15 +1,25 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Microservicio de gestión de estudiantes
+  description: Este servicio permite gestionar los estudiantes de la aplicación
+  version: 1.0.0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
+  - url: 'https://mallba3.lcc.uma.es'
+    description: Servidor principal
+  - url: 'http://localhost:8080'
+    description: Servidor local
+
+tags:
+  - name: Institutos
+    description: Gestión de institutos
+  - name: Estudiantes
+    description: Gestión de estudiantes
+
 paths:
   /institutos/{idInstituto}:
     get:
       tags:
-      - controlador-institutos
+      - Institutos
       description: Devuelve información de un instituto concreto
       operationId: consultarInstituto
       parameters:
@@ -32,9 +42,9 @@ paths:
           description: Acceso no autorizado
     put:
       tags:
-      - controlador-institutos
+      - Institutos
       description: Actualiza el instituto concreto
-      operationId: actualizarMateria
+      operationId: actualizarInstituto
       parameters:
       - name: idInstituto
         in: path
@@ -46,7 +56,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Instituto'
+              $ref: '#/components/schemas/InstitutoNuevo'
         required: true
       responses:
         "200":
@@ -61,7 +71,7 @@ paths:
           description: Acceso no autorizado
     delete:
       tags:
-      - controlador-institutos
+      - Institutos
       description: Elimina un instituto concreto. Solo se puede eliminar si el instituto
         no aparece asociado a un estudiante.
       operationId: eliminarInstituto
@@ -84,7 +94,7 @@ paths:
   /estudiantes/{idEstudiante}:
     get:
       tags:
-      - controlador-estudiantes
+      - Estudiantes
       description: Devuelve información de un estudiante concreto
       operationId: consultarEstudiante
       parameters:
@@ -107,7 +117,7 @@ paths:
           description: Acceso no autorizado
     put:
       tags:
-      - controlador-estudiantes
+      - Estudiantes
       description: 'Actualiza la información un/a estudiante. El atributo ''noEliminar''
         solo puede actualizarse una vez de false a verdadero. '
       operationId: actualizarEstudiante
@@ -139,7 +149,7 @@ paths:
           description: Acceso no autorizado
     delete:
       tags:
-      - controlador-estudiantes
+      - Estudiantes
       description: Elimina un/a estudiante concreto/a siempre que no haya sido marcado
         como para 'no eliminar' por haber registrado otro servicio información sobre
         el/la estudiante
@@ -163,7 +173,7 @@ paths:
   /institutos:
     get:
       tags:
-      - controlador-institutos
+      - Institutos
       description: Devuelve la lista de institutos
       operationId: consultarInstitutos
       responses:
@@ -180,14 +190,14 @@ paths:
           description: Acceso no autorizado
     post:
       tags:
-      - controlador-institutos
+      - Institutos
       description: Crea un nuevo instituto. Devuelve el instituto creado.
       operationId: crearInstituto
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Instituto'
+              $ref: '#/components/schemas/InstitutoNuevo'
         required: true
       responses:
         "201":
@@ -207,7 +217,7 @@ paths:
   /estudiantes:
     get:
       tags:
-      - controlador-estudiantes
+      - Estudiantes
       description: Devuelve la lista de estudiantes (totales o de una sede) de una
         convocatoria.
       operationId: consultarEstudiantes
@@ -240,7 +250,7 @@ paths:
           description: Acceso no autorizado
     post:
       tags:
-      - controlador-estudiantes
+      - Estudiantes
       description: Crea un nuevo estudiante.
       operationId: crearEstudiante
       requestBody:
@@ -269,7 +279,7 @@ paths:
   /estudiantes/upload:
     post:
       tags:
-      - controlador-estudiantes
+      - Estudiantes
       description: Sube un fichero CSV con la información de  los estudiantes para
         importarla.
       operationId: importarEstudiantes
@@ -315,6 +325,22 @@ components:
           format: int32
         pais:
           type: string
+    InstitutoNuevo:
+      type: object
+      properties:
+        nombre:
+          type: string
+        direccion1:
+          type: string
+        direccion2:
+          type: string
+        localidad:
+          type: string
+        codigoPostal:
+          type: integer
+          format: int32
+        pais:
+          type: string      
     EstudianteNuevo:
       type: object
       properties:
@@ -404,7 +430,10 @@ components:
         problemaImportacion:
           type: string
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - jwt: []

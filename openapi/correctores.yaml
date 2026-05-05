@@ -1,17 +1,25 @@
 openapi: 3.0.1
 info:
-  title: OpenAPI definition
-  version: v0
+  title: Microservicio de gestión de correctores
+  description: Este servicio permite gestionar los correctores de la aplicación
+  version: 1.0.0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
+  - url: 'https://mallba3.lcc.uma.es'
+    description: Servidor principal
+  - url: 'http://localhost:8080'
+    description: Servidor local
+
+tags:
+  - name: Correctores
+    description: Gestión de correctores
+
 paths:
   /correctores/{id}:
     get:
       tags:
-      - controlador-correctores
+      - Correctores
       description: Obtiene un corrector concreto
-      operationId: getUsuario
+      operationId: getCorrector
       parameters:
       - name: id
         in: path
@@ -28,21 +36,13 @@ paths:
                 $ref: '#/components/schemas/Corrector'
         "404":
           description: El corrector no existe
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
     put:
       tags:
-      - controlador-correctores
+      - Correctores
       description: Actualiza un corrector
-      operationId: actualizarUsuario
+      operationId: actualizarCorrector
       parameters:
       - name: id
         in: path
@@ -56,24 +56,16 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Corrector'
+                $ref: '#/components/schemas/CorrectorNuevo'
         "404":
           description: El corrector no existe
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
     delete:
       tags:
-      - controlador-correctores
+      - Correctores
       description: Elimina el corrector.
-      operationId: eliminarUsuario
+      operationId: eliminarCorrector
       parameters:
       - name: id
         in: path
@@ -91,9 +83,9 @@ paths:
   /correctores:
     get:
       tags:
-      - controlador-correctores
+      - Correctores
       description: Obtiene la lista de correctores del sistema
-      operationId: obtenerUsuarios_1
+      operationId: obtenerCorrectores
       parameters:
       - name: idConvocatoria
         in: query
@@ -114,18 +106,12 @@ paths:
                   $ref: '#/components/schemas/Corrector'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Corrector'
     post:
       tags:
-      - controlador-correctores
+      - Correctores
       description: Crea un nuevo corrector para la convocatoria vigente (que se pasa
         dentro del objeto)
-      operationId: obtenerUsuarios
+      operationId: obtenerCorrector
       requestBody:
         content:
           application/json:
@@ -200,7 +186,10 @@ components:
         nombre:
           type: string
   securitySchemes:
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+    jwt:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - jwt: []
