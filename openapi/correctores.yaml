@@ -28,16 +28,8 @@ paths:
                 $ref: '#/components/schemas/Corrector'
         "404":
           description: El corrector no existe
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
     put:
       tags:
       - controlador-correctores
@@ -59,16 +51,8 @@ paths:
                 $ref: '#/components/schemas/Corrector'
         "404":
           description: El corrector no existe
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Corrector'
     delete:
       tags:
       - controlador-correctores
@@ -114,12 +98,6 @@ paths:
                   $ref: '#/components/schemas/Corrector'
         "403":
           description: Acceso no autorizado
-          content:
-            '*/*':
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Corrector'
     post:
       tags:
       - controlador-correctores
