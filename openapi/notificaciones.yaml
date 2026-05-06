@@ -1,7 +1,12 @@
 {
   "openapi": "3.0.1",
   "info": { "title": "OpenAPI definition", "version": "v0" },
-  "servers": [ { "url": "http://localhost:8080", "description": "Generated server url" } ],
+  "servers": [ 
+    { "url": "https://mallba3.lcc.uma.es", 
+    "description": "Servidor principal" } ,
+    { "url": "http://localhost:8080", 
+    "description": "Servidor local" } 
+  ],
   "paths":
     {
       "/notificaciones/{id}":
