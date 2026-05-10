@@ -185,8 +185,6 @@ components:
         id:
           type: integer
           format: int64
-        nombre:
-          type: string
   securitySchemes:
     jwt:
       type: http
