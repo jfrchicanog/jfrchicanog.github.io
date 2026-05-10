@@ -259,11 +259,7 @@
             "description": "No existe el/la estudiante o no coinciden los datos"
           }
         },
-        "security": [
-          {
-            "public": []
-          }
-        ]
+        "security": []
       }
     },
     "/examenes/correcciones": {
@@ -389,11 +385,16 @@
       }
     },
     "securitySchemes": {
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
-  }
+  },
+  "security": [
+    {
+      "jwt": []
+    }
+  ]
 }
