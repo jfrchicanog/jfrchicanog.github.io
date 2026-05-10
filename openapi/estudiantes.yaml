@@ -426,7 +426,7 @@ components:
       type: object
       properties:
         estudiante:
-          $ref: '#/components/schemas/Estudiante'
+          $ref: '#/components/schemas/EstudianteNuevo'
         problemaImportacion:
           type: string
   securitySchemes:
