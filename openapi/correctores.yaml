@@ -127,8 +127,12 @@ paths:
               style: simple
               schema:
                 type: string
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Corrector'
         "400":
-          description: Hay un problema con los parámetros indicados para el corrector (no existe el idUsuario, la convocatoria o alguna materia)
+          description: Hay un problema con los parámetros indicados para el corrector (no existe el idUsuario o la materia)
         "409":
           description: Hay un corrector con el mismo identificador de usuario
         "403":
