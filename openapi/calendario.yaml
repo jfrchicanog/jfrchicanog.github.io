@@ -455,7 +455,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Materia'
+                $ref: '#/components/schemas/Convocatoria'
         "403":
           description: Acceso no autorizado
   /convocatorias/actual:
